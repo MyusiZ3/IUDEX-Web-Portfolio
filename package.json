@@ -4,7 +4,8 @@
   "description": "IUDEX Web Portfolio with Supabase Integration",
   "main": "home.html",
   "scripts": {
-    "start": "npx serve ."
+    "start": "npx serve .",
+    "dev": "npx serve ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
