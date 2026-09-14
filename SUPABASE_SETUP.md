@@ -1,74 +1,69 @@
-# Panduan Setup Database Supabase & Konfigurasi Environment
+# Panduan Lengkap Setup Supabase, RLS Rules, dan Deployment Vercel
 
-Dokumen ini berisi panduan langkah demi langkah untuk menghubungkan **IUDEX Web Portfolio** ke database **Supabase**.
+Dokumen ini berisi panduan teknis mendalam untuk menghubungkan **IUDEX Web Portfolio** ke Supabase, konfigurasi RLS Rules, pengisian kredensial API, serta prosedur deployment ke Vercel.
 
----
+====================================================================
+Langkah 1: Pembuatan Project di Supabase
+====================================================================
 
-## Langkah 1: Buat Project Baru di Supabase
+1. Akses Supabase Dashboard pada tautan https://supabase.com/dashboard dan lakukan pendaftaran atau login.
+2. Klik tombol New Project.
+3. Masukkan nama project, password database, dan pilih region terdekat (misalnya Singapore).
+4. Klik tombol Create new project dan tunggu hingga proses inisialisasi selesai.
 
-1. Buka [Dashboard Supabase](https://supabase.com/dashboard) dan buat akun/login jika belum ada.
-2. Klik tombol **New Project**.
-3. Isi informasi project:
-   - **Name**: `IUDEX-Web-Portfolio`
-   - **Database Password**: (Simpan password database Anda dengan aman)
-   - **Region**: Pilih lokasi terdekat (contoh: *Singapore / Southeast Asia*).
-4. Klik **Create new project** dan tunggu proses inisialisasi (~1-2 menit).
+====================================================================
+Langkah 2: Eksekusi Script SQL dan Pembentukan RLS Rules
+====================================================================
 
----
+1. Pilih menu SQL Editor pada panel navigasi sebelah kiri Supabase Dashboard.
+2. Klik tombol New query.
+3. Salin seluruh kode SQL dari file database/supabase_setup.sql di dalam repositori.
+4. Tempelkan kode ke dalam SQL Editor lalu klik tombol RUN.
+5. Script secara otomatis membentuk tabel user, team_members, projects, index performa, serta mengaktifkan Row Level Security (RLS) Rules berikut:
+   * Policy Public Read Users: Membaca data user untuk otentikasi login.
+   * Policy Public Read Projects: Membaca seluruh data proyek portofolio publik.
+   * Policy Public Insert Projects: Menambahkan proyek baru.
+   * Policy Public Update Projects: Memperbarui data proyek.
+   * Policy Public Delete Projects: Menghapus data proyek.
 
-## Langkah 2: Jalankan Script SQL Setup Database
+====================================================================
+Langkah 3: Pengambilan Kredensial API yang Diperlukan
+====================================================================
 
-1. Pada menu navigasi sebelah kiri Supabase Dashboard, pilih menu **SQL Editor** (ikon `<i/>`).
-2. Klik tombol **+ New query**.
-3. Salin (*copy*) seluruh isi file SQL yang ada pada proyek ini:
-   [database/supabase_setup.sql](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/database/supabase_setup.sql)
-4. Tempelkan (*paste*) kode SQL tersebut ke dalam SQL Editor Supabase.
-5. Klik tombol **RUN** di pojok kanan bawah.
-6. Anda akan melihat pesan keluaran: `Database Setup Complete!`.
+Agar aplikasi web dapat berjalan dan berkomunikasi dengan database, Anda hanya perlu menyalin dua buah string kredensial dari Supabase Dashboard:
 
----
+1. Buka menu Project Settings (ikon roda gigi) di pojok kiri bawah Dashboard.
+2. Pilih opsi menu API.
+3. Salin dua string berikut:
+   * Project URL: Berformat https://xxxxxxxxxxxx.supabase.co
+   * anon public key: Berformat eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-## Langkah 3: Ambil Kredensial API (URL & Anon Key)
+====================================================================
+Langkah 4: Konfigurasi Kredensial Lokal (assets/js/config.js)
+====================================================================
 
-1. Pada Supabase Dashboard, buka menu **Project Settings** (ikon roda gigi `⚙️` di bagian bawah menu kiri).
-2. Pilih sub-menu **API**.
-3. Cari section **Project API keys**:
-   - **Project URL**: Contoh `https://abcdefghijklm.supabase.co`
-   - **Project API Key (`anon` `public`)**: Kunci publik API berawalan `eyJhbGciOi...`
-
----
-
-## Langkah 4: Masukkan Kredensial ke `assets/js/config.js`
-
-1. Buka file konfigurasi di dalam proyek web Anda:
-   [assets/js/config.js](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/assets/js/config.js)
-2. Ganti nilai `URL` dan `ANON_KEY` dengan kredensial dari Langkah 3:
+1. Buka file assets/js/config.js pada repositori Anda.
+2. Masukkan Project URL dan anon public key yang telah disalin:
 
 ```javascript
 window.SUPABASE_CONFIG = {
-    URL: 'https://xxxxxxxxxxxx.supabase.co', // Ganti dengan Project URL Anda
-    ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' // Ganti dengan public anon key Anda
+    URL: 'https://xxxxxxxxxxxx.supabase.co',
+    ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
 };
 ```
 
-3. Simpan file `config.js`.
+3. Simpan file. Nilai sensitif ini juga dapat Anda salin ke file .env lokal (file .env sudah otomatis masuk ke dalam daftar .gitignore sehingga aman dari commit git).
 
----
+====================================================================
+Langkah 5: Cara Memasukkan Kredensial saat Deployment di Vercel
+====================================================================
 
-## Langkah 5: Uji Coba Aplikasi Web
+Saat melakukan deployment proyek ke Vercel, Anda dapat mengonfigurasi kredensial Supabase melalui fitur Environment Variables Vercel:
 
-1. Jalankan aplikasi web dengan membuka [home.html](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/home.html) atau melalui Live Server.
-2. Coba fitur-fitur berikut:
-   - **Admin Login**: Buka [admin/login.html](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/admin/login.html), masuk dengan username `imyusi` dan password `99qr`.
-   - **Lihat Data Projects**: Masuk ke [admin/projects.html](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/admin/projects.html) untuk melihat daftar proyek yang diambil langsung dari Supabase.
-   - **Tambah Project**: Buka [admin/project-create.html](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/admin/project-create.html) untuk menambah proyek baru.
-   - **Edit Project**: Klik tombol **Edit** pada tabel proyek untuk mengubah data.
-   - **Hapus Project**: Klik tombol **Delete** pada tabel proyek.
-   - **Galeri Publik**: Buka [gallery/gallery-aliya.html](file:///c:/Users/muham/Documents/Github/IUDEX-Web-Portfolio/gallery/gallery-aliya.html) untuk memverifikasi item galeri dinamis.
-
----
-
-## Troubleshooting
-
-- **Supabase Client error / Request Blocked**: Pastikan URL dan Anon Key pada `assets/js/config.js` sudah sesuai.
-- **Tabel kosong saat login / fetch**: Pastikan Anda telah menjalankan script `supabase_setup.sql` yang membuat aturan RLS (Row Level Security) publik untuk membaca data.
+1. Login ke Vercel Dashboard pada https://vercel.com dan klik Add New Project.
+2. Impor repositori GitHub IUDEX-Web-Portfolio.
+3. Pada halaman konfigurasi sebelum deploy, buka section Environment Variables.
+4. Tambahkan dua variabel berikut:
+   * Key: SUPABASE_URL | Value: https://xxxxxxxxxxxx.supabase.co
+   * Key: SUPABASE_ANON_KEY | Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+5. Klik Deploy. Vercel akan mempublikasikan situs web statis Anda beserta akses Supabase secara otomatis.
