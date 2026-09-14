@@ -110,5 +110,29 @@ ON CONFLICT (username) DO UPDATE SET
     password = EXCLUDED.password,
     role = EXCLUDED.role;
 
-SELECT 'Clean Database Setup Complete! Tables are empty except initial superadmin account.' AS status;
+-- --------------------------------------------------------------------
+-- 8. SUPABASE STORAGE BUCKET & RLS POLICIES
+-- --------------------------------------------------------------------
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('portfolio-images', 'portfolio-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Public Read Portfolio Storage"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'portfolio-images');
+
+CREATE POLICY "Public Upload Portfolio Storage"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'portfolio-images');
+
+CREATE POLICY "Public Update Portfolio Storage"
+ON storage.objects FOR UPDATE
+USING (bucket_id = 'portfolio-images');
+
+CREATE POLICY "Public Delete Portfolio Storage"
+ON storage.objects FOR DELETE
+USING (bucket_id = 'portfolio-images');
+
+SELECT 'Clean Database & Storage Setup Complete!' AS status;
+
 

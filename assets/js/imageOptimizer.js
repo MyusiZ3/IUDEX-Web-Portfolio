@@ -89,6 +89,47 @@ const ImageOptimizer = {
     },
 
     /**
+     * Upload compressed WebP blob to Supabase Storage Bucket under member subfolder
+     * Path pattern: portfolio-images/{username}/{timestamp}_{filename}.webp
+     */
+    async uploadToStorage(blob, memberUsername, originalFileName) {
+        const username = (memberUsername || 'general').toLowerCase().trim();
+        const timestamp = Date.now();
+        const sanitizedFileName = originalFileName.replace(/[^a-zA-Z0-9_.-]/g, '_');
+        const filePath = `${username}/${timestamp}_${sanitizedFileName}`;
+
+        if (typeof supabaseClient !== 'undefined' && supabaseClient && SUPABASE_CONFIG.URL !== "YOUR_SUPABASE_URL") {
+            try {
+                const { data, error } = await supabaseClient
+                    .storage
+                    .from('portfolio-images')
+                    .upload(filePath, blob, {
+                        contentType: 'image/webp',
+                        upsert: true
+                    });
+
+                if (error) throw error;
+
+                const { data: publicUrlData } = supabaseClient
+                    .storage
+                    .from('portfolio-images')
+                    .getPublicUrl(filePath);
+
+                return publicUrlData.publicUrl;
+            } catch (err) {
+                console.warn('Supabase storage upload error:', err);
+            }
+        }
+
+        // Offline / Fallback: return dataURL
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+        });
+    },
+
+    /**
      * Format bytes into human readable string (KB / MB)
      */
     formatBytes(bytes, decimals = 2) {
@@ -100,3 +141,4 @@ const ImageOptimizer = {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 };
+
