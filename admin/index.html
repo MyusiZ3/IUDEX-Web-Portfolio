@@ -717,12 +717,12 @@
 
                         <div class="d-flex align-items-center gap-4 mb-3">
                             <div>
-                                <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">79,675</div>
-                                <div class="text-sub small">This month <span class="badge-fit badge-fit-green ml-1">↑ 2.4%</span></div>
+                                <div class="h2 font-weight-bold text-main mb-0" id="dashTotalViews" style="font-family:'Outfit';">0</div>
+                                <div class="text-sub small">Total Views <span class="badge-fit badge-fit-green ml-1">Live</span></div>
                             </div>
                             <div class="pl-3 border-left" style="border-color: var(--border) !important;">
-                                <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">312</div>
-                                <div class="text-sub small">Daily views <span class="badge-fit badge-fit-green ml-1">↑ 4.7%</span></div>
+                                <div class="h2 font-weight-bold text-main mb-0" id="dashDailyViews" style="font-family:'Outfit';">0</div>
+                                <div class="text-sub small">Daily views <span class="badge-fit badge-fit-green ml-1">Today</span></div>
                             </div>
                         </div>
 
@@ -1140,6 +1140,7 @@
     <script src="../assets/js/imageOptimizer.js"></script>
     <script src="../assets/js/projects.js"></script>
     <script src="../assets/js/users.js"></script>
+    <script src="../assets/js/analytics.js"></script>
 
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -1460,12 +1461,24 @@
             return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        async function updateDashboardAnalytics() {
+            if (typeof Analytics === 'undefined') return;
+            const stats = await Analytics.getStats();
+
+            const totalEl = document.getElementById('dashTotalViews');
+            if (totalEl) totalEl.textContent = (stats.totalViews || 0).toLocaleString();
+
+            const dailyEl = document.getElementById('dashDailyViews');
+            if (dailyEl) dailyEl.textContent = (stats.dailyViews || 0).toLocaleString();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (window.location.hash) {
                 history.replaceState(null, null, window.location.pathname);
             }
             switchTab('sec-dashboard');
             renderProjects();
+            updateDashboardAnalytics();
             if (typeof UserManagement !== 'undefined') {
                 UserManagement.loadUsers();
             }

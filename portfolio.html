@@ -195,7 +195,7 @@
     <script src="assets/js/config.js"></script>
     <script src="assets/js/supabaseClient.js"></script>
     <script src="assets/js/projects.js"></script>
-
+    <script src="assets/js/analytics.js"></script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/particles.js"></script>
     <script src="assets/js/particles.min.js"></script>
@@ -284,7 +284,7 @@
                 const adminName = p.admin || 'IUDEX';
                 html += `
                     <div class="service-one service wow" style="margin: 15px; display: inline-block; vertical-align: top; text-align: left;">
-                        <a href="${imgPath}" target="_blank" style="text-decoration: none;">
+                        <a href="${imgPath}" target="_blank" onclick="if(window.Analytics) Analytics.trackProjectView(${p.id || 0});" style="text-decoration: none;">
                             <div class="services-img">
                                 <img src="${imgPath}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='assets/images/placeholder.jpg';">
                             </div>
