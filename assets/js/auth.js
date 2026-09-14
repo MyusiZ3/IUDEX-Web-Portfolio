@@ -15,7 +15,7 @@ const Auth = {
             // Update Topbar Username & Role Badge
             const userEl = document.getElementById('currentUsername');
             if (userEl) {
-                const roleBadge = this.isSuperAdmin() ? ' ⭐ [Superadmin]' : ' [Admin]';
+                const roleBadge = this.isSuperAdmin() ? ' [Superadmin]' : ' [Admin]';
                 userEl.textContent = `IUDEX ${user.username}${roleBadge}`;
             }
 

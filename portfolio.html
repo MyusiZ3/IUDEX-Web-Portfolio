@@ -116,7 +116,6 @@
         <div id="breaker"></div>
         <div id="breaker-two"></div>
 
-        <!-- Navigation Bar -->
         <div id="navigation-content">
             <div class="logo">
                 <a href="home.html">
@@ -145,7 +144,6 @@
             </div>
         </div>
 
-        <!-- Header & Portfolio Content -->
         <div id="header">
             <div id="particles"></div>
 
@@ -154,15 +152,13 @@
                     Team <span class="color">Portfolio Hub</span>
                 </div>
 
-                <!-- Interactive Member Filter Tabs -->
                 <div class="filter-container">
-                    <button class="filter-btn active" data-filter="all" onclick="setMemberFilter('all')">✨ All Projects</button>
-                    <button class="filter-btn" data-filter="sidik" onclick="setMemberFilter('sidik')">👨‍💻 Muhamad Sidik</button>
-                    <button class="filter-btn" data-filter="aliya" onclick="setMemberFilter('aliya')">🎨 Aliya Dewi</button>
-                    <button class="filter-btn" data-filter="bilqis" onclick="setMemberFilter('bilqis')">📐 Bilqis Syiefa</button>
+                    <button class="filter-btn active" data-filter="all" onclick="setMemberFilter('all')">All Projects</button>
+                    <button class="filter-btn" data-filter="sidik" onclick="setMemberFilter('sidik')">Muhamad Sidik</button>
+                    <button class="filter-btn" data-filter="aliya" onclick="setMemberFilter('aliya')">Aliya Dewi</button>
+                    <button class="filter-btn" data-filter="bilqis" onclick="setMemberFilter('bilqis')">Bilqis Syiefa</button>
                 </div>
 
-                <!-- Active Member Info Banner -->
                 <div class="member-banner" id="memberBanner">
                     <img id="bannerAvatar" src="" alt="Member Avatar">
                     <h3 id="bannerName">Member Name</h3>
@@ -170,7 +166,6 @@
                     <div class="member-socials" id="bannerSocials"></div>
                 </div>
 
-                <!-- Dynamic Gallery Grid -->
                 <div class="services-content-wrapper">
                     <div class="services-content" id="galleryContainer">
                         <p class="text-white">Loading portfolio items...</p>
@@ -191,10 +186,8 @@
         </div>
     </div>
 
-    <!-- Admin CMS Access Button -->
-    <a href="admin/login.html" class="admin-link">🔑 CMS Admin</a>
+    <a href="admin/login.html" class="admin-link">CMS Admin</a>
 
-    <!-- Supabase SDK & Modules -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/config.js"></script>
     <script src="assets/js/supabaseClient.js"></script>
@@ -206,7 +199,6 @@
     <script src="assets/js/index.js"></script>
 
     <script>
-    // Member profiles metadata
     const MEMBERS_DATA = {
         'sidik': {
             name: 'Muhamad Sidik',
@@ -239,7 +231,6 @@
     async function setMemberFilter(filter) {
         currentFilter = filter.toLowerCase();
 
-        // Update active tab buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             if (btn.getAttribute('data-filter') === currentFilter) {
                 btn.classList.add('active');
@@ -248,7 +239,6 @@
             }
         });
 
-        // Update Member Banner Info
         const banner = document.getElementById('memberBanner');
         if (currentFilter !== 'all' && MEMBERS_DATA[currentFilter]) {
             const m = MEMBERS_DATA[currentFilter];
@@ -265,7 +255,6 @@
             banner.style.display = 'none';
         }
 
-        // Render Dynamic Gallery Items
         await renderGalleryItems();
     }
 
@@ -321,7 +310,6 @@
             .replace(/"/g, '&quot;');
     }
 
-    // Initialize on page load with URL parameter check (e.g. portfolio.html?member=sidik)
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const memberParam = urlParams.get('member');

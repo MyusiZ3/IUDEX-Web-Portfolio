@@ -194,7 +194,7 @@
         Auth.requireAuth();
 
         const isSuper = Auth.isSuperAdmin();
-        document.getElementById('roleInfoBadge').textContent = isSuper ? '⭐ Role: Superadmin (Full Access)' : '👤 Role: Admin (Individual Access)';
+        document.getElementById('roleInfoBadge').textContent = isSuper ? 'Role: Superadmin (Full Access)' : 'Role: Admin (Individual Access)';
         document.getElementById('rbacNotice').textContent = isSuper 
             ? 'Anda memiliki akses Superadmin untuk mengedit & menghapus semua proyek tim.' 
             : 'Sebagai Admin, Anda dapat mengedit/menghapus proyek buatan Anda sendiri.';
