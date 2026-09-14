@@ -1,171 +1,152 @@
 /**
- * Projects CRUD Module
- * Handles loading, adding, updating, and deleting project entries with Supabase or LocalStorage fallback.
+ * Projects CRUD Module (Full Supabase Integration)
+ * Reads and writes directly to Supabase "projects" table.
  */
 
 const Projects = {
-    LOCAL_KEY: 'iudex_projects_data',
-
-    // Sample fallback data when offline or before Supabase URL configured
-    DEFAULT_PROJECTS: [
-        {
-            id: 1,
-            title: 'Digital Art Showcase',
-            description: 'Koleksi karya seni digital dan desain karakter.',
-            admin: 'Sidik',
-            date: '2024-01-15',
-            image: '../uploads/sidik_porto/DA_galeri1.png'
-        },
-        {
-            id: 2,
-            title: 'Lettering & Character Art',
-            description: 'Desain typography dan ilustrasi karakter.',
-            admin: 'Aliya',
-            date: '2024-01-10',
-            image: '../uploads/aliya/aliyafoto.jpg'
-        },
-        {
-            id: 3,
-            title: 'Creative Layout & Radio',
-            description: 'Desain tata letak responsif dan media visual.',
-            admin: 'Bilqis',
-            date: '2024-01-05',
-            image: '../uploads/bilqis/beruang.jpg'
-        }
-    ],
-
-    // Fetch all projects
+    // Fetch all projects directly from Supabase
     async getAll() {
-        if (window.supabaseClient) {
-            try {
-                const { data, error } = await window.supabaseClient
-                    .from('projects')
-                    .select('*')
-                    .order('id', { ascending: false });
+        if (!window.supabaseClient) {
+            console.error('Supabase client is not initialized.');
+            return [];
+        }
 
-                if (!error && data && data.length > 0) {
-                    return data;
-                }
-            } catch (e) {
-                console.warn('Supabase fetch error, fallback to local storage:', e);
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('projects')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) {
+                console.error('Error fetching projects from Supabase:', error);
+                return [];
             }
+            return data || [];
+        } catch (e) {
+            console.error('Exception fetching projects:', e);
+            return [];
         }
-
-        const local = localStorage.getItem(this.LOCAL_KEY);
-        if (local) {
-            return JSON.parse(local);
-        }
-        localStorage.setItem(this.LOCAL_KEY, JSON.stringify(this.DEFAULT_PROJECTS));
-        return this.DEFAULT_PROJECTS;
     },
 
-    // Fetch single project by ID
+    // Fetch single project by ID directly from Supabase
     async getById(id) {
-        id = parseInt(id);
-        const projects = await this.getAll();
-        return projects.find(p => p.id === id) || null;
+        if (!window.supabaseClient) return null;
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('projects')
+                .select('*')
+                .eq('id', parseInt(id))
+                .maybeSingle();
+
+            if (error) {
+                console.error('Error fetching project by ID:', error);
+                return null;
+            }
+            return data || null;
+        } catch (e) {
+            console.error('Exception fetching project by ID:', e);
+            return null;
+        }
     },
 
-    // Fetch projects filtered by Admin name
+    // Fetch projects filtered by Admin name directly from Supabase
     async getByAdmin(adminName) {
-        if (window.supabaseClient) {
-            try {
-                const { data, error } = await window.supabaseClient
-                    .from('projects')
-                    .select('*')
-                    .ilike('admin', adminName)
-                    .order('id', { ascending: false });
+        if (!window.supabaseClient) return [];
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('projects')
+                .select('*')
+                .ilike('admin', adminName)
+                .order('id', { ascending: false });
 
-                if (!error && data) {
-                    return data;
-                }
-            } catch (e) {
-                console.warn('Supabase getByAdmin error:', e);
+            if (error) {
+                console.error('Error fetching projects by admin:', error);
+                return [];
             }
+            return data || [];
+        } catch (e) {
+            console.error('Exception fetching projects by admin:', e);
+            return [];
+        }
+    },
+
+    // Create new project directly in Supabase
+    async create(title, description, admin, date, tag, imagePath) {
+        if (!window.supabaseClient) {
+            return { success: false, message: 'Koneksi Supabase tidak tersedia' };
         }
 
-        const all = await this.getAll();
-        return all.filter(p => p.admin.toLowerCase() === adminName.toLowerCase());
-    },
-
-    // Add new project
-    async create(title, description, admin, date, imagePath) {
         const newProject = {
             title,
             description,
             admin,
             date,
-            image: imagePath || '../assets/images/placeholder.jpg'
+            tag: tag || 'Digital Art',
+            category: tag || 'general',
+            image: imagePath || 'uploads/sidik_porto/DA_galeri1.png'
         };
 
-        if (window.supabaseClient) {
-            try {
-                const { data, error } = await window.supabaseClient
-                    .from('projects')
-                    .insert([newProject])
-                    .select();
+        try {
+            const { data, error } = await window.supabaseClient
+                .from('projects')
+                .insert([newProject])
+                .select();
 
-                if (!error) return { success: true, data };
-            } catch (e) {
-                console.warn('Supabase insert failed:', e);
-            }
+            if (error) throw error;
+            return { success: true, data };
+        } catch (e) {
+            console.error('Error creating project in Supabase:', e);
+            return { success: false, message: e.message };
         }
-
-        const all = await this.getAll();
-        newProject.id = Date.now();
-        all.unshift(newProject);
-        localStorage.setItem(this.LOCAL_KEY, JSON.stringify(all));
-        return { success: true, data: newProject };
     },
 
-    // Update project by ID
-    async update(id, title, description, admin, date, imagePath) {
-        id = parseInt(id);
-        const updatedData = { title, description, admin, date };
+    // Update project directly in Supabase
+    async update(id, title, description, admin, date, tag, imagePath) {
+        if (!window.supabaseClient) {
+            return { success: false, message: 'Koneksi Supabase tidak tersedia' };
+        }
+
+        const updatedData = {
+            title,
+            description,
+            admin,
+            date,
+            tag: tag || 'Digital Art',
+            category: tag || 'general'
+        };
         if (imagePath) updatedData.image = imagePath;
 
-        if (window.supabaseClient) {
-            try {
-                const { data, error } = await window.supabaseClient
-                    .from('projects')
-                    .update(updatedData)
-                    .eq('id', id);
+        try {
+            const { error } = await window.supabaseClient
+                .from('projects')
+                .update(updatedData)
+                .eq('id', parseInt(id));
 
-                if (!error) return { success: true };
-            } catch (e) {
-                console.warn('Supabase update failed:', e);
-            }
-        }
-
-        const all = await this.getAll();
-        const index = all.findIndex(p => p.id === id);
-        if (index !== -1) {
-            all[index] = { ...all[index], ...updatedData };
-            localStorage.setItem(this.LOCAL_KEY, JSON.stringify(all));
+            if (error) throw error;
             return { success: true };
+        } catch (e) {
+            console.error('Error updating project in Supabase:', e);
+            return { success: false, message: e.message };
         }
-        return { success: false, message: 'Project not found' };
     },
 
-    // Delete project by ID
+    // Remove project directly from Supabase
     async remove(id) {
-        id = parseInt(id);
-        if (window.supabaseClient) {
-            try {
-                const { error } = await window.supabaseClient
-                    .from('projects')
-                    .delete()
-                    .eq('id', id);
-
-                if (!error) return { success: true };
-            } catch (e) {
-                console.warn('Supabase delete failed:', e);
-            }
+        if (!window.supabaseClient) {
+            return { success: false, message: 'Koneksi Supabase tidak tersedia' };
         }
 
-        let all = await this.getAll();
-        all = all.filter(p => p.id !== id);
-        localStorage.setItem(this.LOCAL_KEY, JSON.stringify(all));
-        return { success: true };
+        try {
+            const { error } = await window.supabaseClient
+                .from('projects')
+                .delete()
+                .eq('id', parseInt(id));
+
+            if (error) throw error;
+            return { success: true };
+        } catch (e) {
+            console.error('Error deleting project from Supabase:', e);
+            return { success: false, message: e.message };
+        }
     }
 };

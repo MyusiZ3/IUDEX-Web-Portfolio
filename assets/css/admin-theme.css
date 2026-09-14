@@ -1,0 +1,222 @@
+/**
+ * Dark Pastel & Light Pastel Custom Theme System for IUDEX CMS
+ */
+
+:root {
+    /* Dark Pastel Theme (Default) */
+    --bg-main: #141622;
+    --bg-sidebar: #1b1e2e;
+    --bg-card: #1f2334;
+    --bg-input: rgba(255, 255, 255, 0.06);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-heading: #ffffff;
+    
+    /* Pastel Palette Accents */
+    --pastel-rose: #ff7675;
+    --pastel-lavender: #a29bfe;
+    --pastel-mint: #55efc4;
+    --pastel-peach: #ffeaa7;
+    --pastel-sky: #74b9ff;
+    
+    /* Badges */
+    --badge-superadmin-bg: rgba(255, 118, 117, 0.2);
+    --badge-superadmin-text: #ff7675;
+    --badge-admin-bg: rgba(162, 155, 254, 0.2);
+    --badge-admin-text: #a29bfe;
+}
+
+[data-theme="light"] {
+    /* Soft Light Pastel Theme */
+    --bg-main: #f4f6fa;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-input: #f1f2f6;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --text-heading: #1a202c;
+    
+    /* Light Pastel Palette Accents */
+    --pastel-rose: #d63031;
+    --pastel-lavender: #6c5ce7;
+    --pastel-mint: #00b894;
+    --pastel-peach: #e1b12c;
+    --pastel-sky: #0984e3;
+    
+    --badge-superadmin-bg: #ffeaa7;
+    --badge-superadmin-text: #d63031;
+    --badge-admin-bg: #dfe6e9;
+    --badge-admin-text: #6c5ce7;
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    font-family: 'Poppins', sans-serif !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#wrapper #content-wrapper {
+    background-color: var(--bg-main) !important;
+}
+
+/* Sidebar Dark Pastel Styling */
+.sidebar {
+    background: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar .sidebar-brand {
+    color: var(--text-heading) !important;
+    font-weight: 700;
+}
+
+.sidebar .nav-item .nav-link {
+    color: var(--text-muted) !important;
+    border-radius: 12px;
+    margin: 4px 12px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-item.active .nav-link,
+.sidebar .nav-item .nav-link:hover {
+    color: var(--text-heading) !important;
+    background: rgba(255, 118, 117, 0.15) !important;
+    border-left: 3px solid var(--pastel-rose);
+}
+
+.sidebar .sidebar-heading {
+    color: var(--text-muted) !important;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Navbar Topbar */
+.topbar {
+    background: var(--bg-sidebar) !important;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Cards Styling */
+.card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    color: var(--text-main) !important;
+}
+
+.card-header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-heading) !important;
+}
+
+/* Stat Card Pastel Borders */
+.border-left-pastel-rose {
+    border-left: 4px solid var(--pastel-rose) !important;
+}
+
+.border-left-pastel-lavender {
+    border-left: 4px solid var(--pastel-lavender) !important;
+}
+
+.border-left-pastel-mint {
+    border-left: 4px solid var(--pastel-mint) !important;
+}
+
+.border-left-pastel-peach {
+    border-left: 4px solid var(--pastel-peach) !important;
+}
+
+/* Tables */
+.table {
+    color: var(--text-main) !important;
+}
+
+.table thead th {
+    background: var(--bg-input) !important;
+    color: var(--text-muted) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.table td, .table th {
+    border-color: var(--border-color) !important;
+    vertical-align: middle;
+}
+
+/* Form inputs */
+.form-control {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 10px !important;
+}
+
+.form-control:focus {
+    border-color: var(--pastel-rose) !important;
+    box-shadow: 0 0 10px rgba(255, 118, 117, 0.3) !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #ff7675 0%, #e84393 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(255, 118, 117, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 118, 117, 0.5);
+}
+
+/* Theme Switcher Button */
+.theme-switch-btn {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.theme-switch-btn:hover {
+    border-color: var(--pastel-rose);
+    color: var(--pastel-rose);
+}
+
+/* Custom Badges */
+.badge-superadmin {
+    background: var(--badge-superadmin-bg);
+    color: var(--badge-superadmin-text);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-admin {
+    background: var(--badge-admin-bg);
+    color: var(--badge-admin-text);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}

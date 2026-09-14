@@ -1,145 +1,1132 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>IUDEX ADMIN Dashboard</title>
+    <title>3RD IUDEX - Admin Dashboard</title>
 
-    <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #090a0f;
+            --bg-card: #14151c;
+            --bg-card-sub: #1b1c26;
+            --bg-sidebar: #0c0d10;
+            --border: #232533;
+            --border-hover: #313448;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #ff4757;
+            --accent-soft: rgba(255, 71, 87, 0.12);
+            --pastel-purple: #c4b5fd;
+            --pastel-purple-bg: rgba(196, 181, 253, 0.15);
+            --pastel-green: #86efac;
+            --pastel-green-bg: rgba(134, 239, 172, 0.15);
+            --pastel-cyan: #67e8f9;
+            --pastel-cyan-bg: rgba(103, 232, 249, 0.15);
+            --pastel-yellow: #fef08a;
+            --pastel-yellow-bg: rgba(254, 240, 138, 0.15);
+            --pastel-rose: #fda4af;
+            --pastel-rose-bg: rgba(253, 164, 175, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .gap-1 { gap: 4px !important; }
+        .gap-2 { gap: 8px !important; }
+        .gap-3 { gap: 16px !important; }
+        .gap-4 { gap: 24px !important; }
+
+        body {
+            background-color: var(--bg-body) !important;
+            color: var(--text-main) !important;
+            font-family: 'Inter', sans-serif !important;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Fixed Left Sidebar Panel */
+        .admin-sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 18px;
+            z-index: 100;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .brand-logo {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            padding-left: 12px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-menu-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            color: var(--text-sub);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-menu-link:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-menu-link.active {
+            color: var(--text-main) !important;
+            background: var(--accent-soft) !important;
+            font-weight: 600;
+        }
+
+        .sidebar-bottom {
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-profile-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .user-avatar-initial {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .badge-pastel {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .badge-purple { background: var(--pastel-purple-bg); color: var(--pastel-purple); }
+        .badge-rose { background: var(--pastel-rose-bg); color: var(--pastel-rose); }
+        .badge-green { background: var(--pastel-green-bg); color: var(--pastel-green); }
+        .badge-yellow { background: var(--pastel-yellow-bg); color: var(--pastel-yellow); }
+
+        .btn-sidebar-outline {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: transparent;
+            color: var(--text-sub);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none !important;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .btn-sidebar-outline:hover {
+            color: var(--text-main);
+            border-color: var(--text-sub);
+        }
+
+        /* Main Content Area */
+        .admin-main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 32px 36px;
+            min-height: 100vh;
+            background: var(--bg-body);
+        }
+
+        /* Card Styling inside Sections */
+        .fit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            height: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .fit-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        /* Time Filter inside Cards */
+        .time-filter {
+            background: var(--bg-card-sub);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 2px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .time-btn {
+            background: transparent;
+            color: var(--text-sub);
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .time-btn.active {
+            background: #ffffff;
+            color: #0b0c10;
+            font-weight: 700;
+        }
+
+        /* Badges */
+        .badge-fit {
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-fit-green { background: var(--pastel-green-bg); color: var(--pastel-green); }
+        .badge-fit-purple { background: var(--pastel-purple-bg); color: var(--pastel-purple); }
+        .badge-fit-cyan { background: var(--pastel-cyan-bg); color: var(--pastel-cyan); }
+        .badge-fit-yellow { background: var(--pastel-yellow-bg); color: var(--pastel-yellow); }
+        .badge-fit-rose { background: var(--pastel-rose-bg); color: var(--pastel-rose); }
+
+        /* Calendar Grid Widget */
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .cal-day-name {
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 600;
+            padding-bottom: 6px;
+        }
+
+        .cal-num {
+            padding: 5px 0;
+            color: var(--text-sub);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .cal-num.highlight {
+            background: var(--pastel-purple-bg);
+            color: var(--pastel-purple);
+            font-weight: 700;
+        }
+
+        .cal-num.active-day {
+            background: var(--pastel-purple);
+            color: #0b0c10;
+            font-weight: 800;
+            border-radius: 4px;
+        }
+
+        /* Bar Chart Histogram Widget */
+        .histogram-bar-group {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 120px;
+            padding-top: 10px;
+        }
+
+        .bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .bar-fill-track {
+            width: 20px;
+            height: 90px;
+            background: var(--bg-card-sub);
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            width: 100%;
+            background: #2b2d3d;
+            border-radius: 4px;
+            transition: height 0.3s;
+        }
+
+        .bar-fill.purple {
+            background: var(--pastel-purple);
+        }
+
+        .bar-fill.yellow {
+            background: var(--pastel-yellow);
+        }
+
+        .bar-label {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        /* Bubble Chart Widget */
+        .bubble-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 180px;
+            position: relative;
+        }
+
+        .bubble {
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            position: absolute;
+            transition: transform 0.2s;
+        }
+
+        .bubble-lg {
+            width: 100px;
+            height: 100px;
+            background: var(--pastel-purple-bg);
+            border: 2px solid var(--pastel-purple);
+            color: var(--pastel-purple);
+            left: 20px;
+            z-index: 2;
+        }
+
+        .bubble-md {
+            width: 75px;
+            height: 75px;
+            background: var(--pastel-cyan-bg);
+            border: 2px solid var(--pastel-cyan);
+            color: var(--pastel-cyan);
+            right: 40px;
+            top: 20px;
+            z-index: 3;
+        }
+
+        .bubble-sm {
+            width: 65px;
+            height: 65px;
+            background: var(--pastel-yellow-bg);
+            border: 2px solid var(--pastel-yellow);
+            color: var(--pastel-yellow);
+            right: 25px;
+            bottom: 20px;
+            z-index: 1;
+        }
+
+        /* Action Buttons */
+        .btn-action-primary {
+            background: var(--accent);
+            color: #ffffff !important;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none !important;
+        }
+
+        .btn-action-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-action-secondary {
+            background: transparent;
+            color: var(--text-main) !important;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none !important;
+        }
+
+        .btn-action-secondary:hover {
+            border-color: var(--text-sub);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* Filter Controls */
+        .filter-pill {
+            background: transparent;
+            color: var(--text-sub);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: #ffffff;
+            color: #0b0c10;
+            border-color: #ffffff;
+            font-weight: 700;
+        }
+
+        .search-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            outline: none;
+            width: 260px;
+        }
+
+        .search-box:focus {
+            border-color: var(--text-sub);
+        }
+
+        /* Fitonist Table Layout */
+        .table-container-fit {
+            width: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        .table-fitonist {
+            width: 100% !important;
+            table-layout: fixed !important;
+            color: var(--text-main);
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .table-fitonist th {
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-fitonist td {
+            background: var(--bg-card-sub);
+            padding: 12px 14px;
+            vertical-align: middle;
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .table-fitonist tr td:first-child {
+            border-left: 1px solid var(--border);
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+        }
+
+        .table-fitonist tr td:last-child {
+            border-right: 1px solid var(--border);
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .cell-title {
+            font-weight: 600;
+            color: var(--text-main);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .cell-desc {
+            color: var(--text-sub);
+            font-size: 12px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            max-width: 100%;
+        }
+
+        .table-thumb {
+            width: 44px;
+            height: 34px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        /* Pagination Controls */
+        .btn-pagination {
+            background: var(--bg-card-sub);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-pagination:hover:not(:disabled) {
+            border-color: var(--text-sub);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-pagination:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-pagination.active {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Section Visibility */
+        .section-view {
+            display: none;
+        }
+        .section-view.active {
+            display: block;
+        }
+
+        /* Modal Customization */
+        .modal-content {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 20px !important;
+            color: var(--text-main) !important;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border) !important;
+            padding: 20px 24px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border) !important;
+            padding: 16px 24px;
+        }
+
+        .form-control {
+            background: var(--bg-body) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-main) !important;
+            border-radius: 10px !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--text-sub) !important;
+            box-shadow: none !important;
+        }
+    </style>
 </head>
 
-<body id="page-top">
+<body>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon">
-                    <img src="../assets/img/icon.png" alt="Logo" width="50" height="50">
-                </div>
-                <div class="sidebar-brand-text">IUDEX <sup>Admin</sup></div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">Team Projects</div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Projects</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="projects.html">Portfolio Projects</a>
-                        <a class="collapse-item" href="project-create.html">Add Project</a>
-                    </div>
-                </div>
-            </li>
-            <hr class="sidebar-divider d-none d-md-block">
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    <!-- FIXED LEFT SIDEBAR PANEL -->
+    <aside class="admin-sidebar">
+        <div>
+            <!-- Brand Logo -->
+            <div class="brand-box">
+                <img src="../assets/logo_foto/Team Logo.png" alt="Logo" class="brand-logo">
+                <div class="brand-name">IUDEX Admin</div>
             </div>
-        </ul>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
+            <!-- Sidebar Navigation Menu -->
+            <nav class="nav-menu">
+                <a class="nav-menu-link active" data-target="sec-dashboard" onclick="switchTab('sec-dashboard')">
+                    Dashboard
+                </a>
+                <a class="nav-menu-link" data-target="sec-projects" onclick="switchTab('sec-projects')">
+                    Proyek Portfolio
+                </a>
+                <a class="nav-menu-link superadmin-only" data-target="sec-users" onclick="switchTab('sec-users')" style="display:none;">
+                    Kelola User
+                </a>
+            </nav>
+        </div>
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="currentUsername">IUDEX Admin</span>
-                                <img class="img-profile rounded-circle" src="../assets/img/IUDEX LOGO.png">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.html" target="_blank">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Our Profile
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
-
-                    <div class="row">
-                        <div class="card shadow mb-4 w-100">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary" id="welcomeHeading">
-                                    Hii Welcome, Admin!
-                                </h6>
-                            </div>
-                            <div class="card-body">
-                                <p>Welcome to the Admin Portfolio Dashboard!</p>
-                                <p>This dashboard is your central hub for managing and updating the portfolio content. Connected directly to Supabase BaaS Database.</p>
-
-                                <p>Key Features:</p>
-                                <ul>
-                                    <li>Update Portfolio Data: Easily modify and enhance project details, descriptions, and images.</li>
-                                    <li>Supabase Integration: Real-time PostgreSQL database operations via Supabase JS SDK.</li>
-                                    <li>User-Friendly Interface: Modern dashboard layout for efficient team collaboration.</li>
-                                </ul>
-
-                                <p class="mb-0">Make your mark, and let the world see the best of your work!</p>
-                            </div>
+        <!-- Sidebar Bottom User Info & Actions -->
+        <div class="sidebar-bottom">
+            <div class="user-profile-card">
+                <div class="user-avatar-initial" id="userAvatarInitial">S</div>
+                <div style="overflow: hidden; flex: 1;">
+                    <div class="small font-weight-bold text-truncate" id="sidebarUsername">Admin</div>
+                    <div class="d-flex align-items-center justify-content-between mt-1">
+                        <div id="sidebarRoleHeader"><span class="badge-pastel badge-rose">Admin</span></div>
+                        <div class="badge-fit badge-fit-purple" style="font-size: 10px; font-family: monospace;" title="Sisa Waktu Sesi (12 Jam)">
+                            <span id="sessionTimerBadge">12:00:00</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>&copy; IUDEX Portfolio | 2026</span>
+            <a href="../home.html" target="_blank" class="btn-sidebar-outline">Lihat Website</a>
+            <button class="btn-sidebar-outline text-danger mb-0" onclick="Auth.logout()">Keluar</button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="admin-main">
+
+        <!-- SECTION 1: DASHBOARD (OVERVIEW WITH FITONIST ANALYTICS CARDS) -->
+        <section id="sec-dashboard" class="section-view active">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h1 class="h3 font-weight-bold mb-1" style="font-family: 'Outfit';">Dashboard</h1>
+                    <p class="text-sub small mb-0">Kelola analitik, data proyek, dan anggota tim IUDEX</p>
+                </div>
+                <button class="btn-action-primary" onclick="openNewProjectModal()">Tambah Proyek Baru</button>
+            </div>
+
+            <!-- FITONIST UPPER ROW GRID (3 CARDS) -->
+            <div class="row mb-4">
+                <!-- CARD 1: REVENUE / TAYANGAN WAVE CHART WIDGET -->
+                <div class="col-lg-5 col-md-12 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">Tayangan Web (Revenue)</span>
+                            <div class="time-filter">
+                                <button class="time-btn">Today</button>
+                                <button class="time-btn">Week</button>
+                                <button class="time-btn active">Month</button>
+                                <button class="time-btn">Range</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-4 mb-3">
+                            <div>
+                                <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">79,675</div>
+                                <div class="text-sub small">This month <span class="badge-fit badge-fit-green ml-1">↑ 2.4%</span></div>
+                            </div>
+                            <div class="pl-3 border-left" style="border-color: var(--border) !important;">
+                                <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">312</div>
+                                <div class="text-sub small">Daily views <span class="badge-fit badge-fit-green ml-1">↑ 4.7%</span></div>
+                            </div>
+                        </div>
+
+                        <!-- SVG Wave Line Chart -->
+                        <div style="position: relative; height: 120px; width: 100%;">
+                            <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
+                                <line x1="0" y1="30" x2="400" y2="30" stroke="#232533" stroke-dasharray="3,3"/>
+                                <line x1="0" y1="70" x2="400" y2="70" stroke="#232533" stroke-dasharray="3,3"/>
+                                <path d="M0 80 Q50 20 100 70 T200 40 T300 80 T400 30" fill="none" stroke="#c4b5fd" stroke-width="3"/>
+                                <path d="M0 95 Q60 50 120 85 T240 60 T340 90 T400 50" fill="none" stroke="#fef08a" stroke-width="2" opacity="0.8"/>
+                            </svg>
+                            <div style="position: absolute; left: 160px; top: 25px; background: #c4b5fd; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 2,894</div>
+                            <div style="position: absolute; left: 240px; top: 55px; background: #fef08a; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 287</div>
+                        </div>
                     </div>
                 </div>
-            </footer>
+
+                <!-- CARD 2: CALENDAR ACTIVITY WIDGET -->
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">September 2026</span>
+                            <span class="text-sub small">↗</span>
+                        </div>
+
+                        <div class="cal-grid">
+                            <div class="cal-day-name">S</div>
+                            <div class="cal-day-name">M</div>
+                            <div class="cal-day-name">T</div>
+                            <div class="cal-day-name">W</div>
+                            <div class="cal-day-name">T</div>
+                            <div class="cal-day-name">F</div>
+                            <div class="cal-day-name">S</div>
+
+                            <div class="cal-num">1</div><div class="cal-num">2</div><div class="cal-num">3</div><div class="cal-num">4</div><div class="cal-num">5</div><div class="cal-num">6</div><div class="cal-num">7</div>
+                            <div class="cal-num">8</div><div class="cal-num">9</div><div class="cal-num">10</div><div class="cal-num">11</div><div class="cal-num">12</div>
+                            <div class="cal-num highlight">13</div><div class="cal-num highlight">14</div>
+                            <div class="cal-num active-day">15</div><div class="cal-num highlight">16</div><div class="cal-num highlight">17</div><div class="cal-num highlight">18</div><div class="cal-num highlight">19</div>
+                            <div class="cal-num">20</div><div class="cal-num">21</div><div class="cal-num">22</div><div class="cal-num">23</div><div class="cal-num">24</div><div class="cal-num">25</div><div class="cal-num">26</div>
+                        </div>
+
+                        <div class="mt-3 p-2 text-center rounded" style="background: var(--bg-card-sub); border: 1px solid var(--border);">
+                            <span class="h5 font-weight-bold text-main mb-0" style="font-family:'Outfit';">18,434 Views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: INSTALLS / ACTIVE VISITORS HISTOGRAM WIDGET -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">Pengunjung Aktif</span>
+                            <div class="time-filter">
+                                <button class="time-btn">Today</button>
+                                <button class="time-btn active">Week</button>
+                                <button class="time-btn">Month</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">4,365</div>
+                            <div class="d-flex gap-2">
+                                <div class="p-2 rounded text-center" style="background: var(--bg-card-sub); min-width: 65px;">
+                                    <div class="font-weight-bold text-main">2,876</div>
+                                    <div class="text-sub" style="font-size: 10px;">Desktop</div>
+                                </div>
+                                <div class="p-2 rounded text-center" style="background: var(--bg-card-sub); min-width: 65px;">
+                                    <div class="font-weight-bold text-main">1,489</div>
+                                    <div class="text-sub" style="font-size: 10px;">Mobile</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bar Chart Histogram -->
+                        <div class="histogram-bar-group">
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 40%;"></div></div><span class="bar-label">Mon</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 60%;"></div></div><span class="bar-label">Tue</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 50%;"></div></div><span class="bar-label">Wed</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 75%;"></div></div><span class="bar-label">Thu</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill purple" style="height: 95%;"></div></div><span class="bar-label">Fri</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill yellow" style="height: 80%;"></div></div><span class="bar-label">Sat</span></div>
+                            <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 45%;"></div></div><span class="bar-label">Sun</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FITONIST LOWER ROW GRID (3 CARDS) -->
+            <div class="row">
+                <!-- CARD 1: POPULAR WORKOUTS / PROYEK TERPOPULER WIDGET -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">Karya Terpopuler</span>
+                            <span class="badge-fit badge-fit-purple">Anggota</span>
+                        </div>
+
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="../uploads/sidik_porto/DA_galeri1.png" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                    <div>
+                                        <div class="font-weight-bold text-main small mb-1">Digital Art Showcase</div>
+                                        <span class="badge-fit badge-fit-yellow" style="font-size: 10px;">Sidik</span>
+                                    </div>
+                                </div>
+                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">39k</div>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="../uploads/aliya/aliyafoto.jpg" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                    <div>
+                                        <div class="font-weight-bold text-main small mb-1">Lettering Art</div>
+                                        <span class="badge-fit badge-fit-green" style="font-size: 10px;">Aliya</span>
+                                    </div>
+                                </div>
+                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">31k</div>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="../uploads/bilqis/beruang.jpg" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                    <div>
+                                        <div class="font-weight-bold text-main small mb-1">Creative Layout</div>
+                                        <span class="badge-fit badge-fit-rose" style="font-size: 10px;">Bilqis</span>
+                                    </div>
+                                </div>
+                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">27k</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2: AGE RANGE / KATEGORI KARYA BUBBLE CHART WIDGET -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">Kategori Karya</span>
+                            <span class="text-sub small">🕒</span>
+                        </div>
+
+                        <div class="bubble-container">
+                            <div class="bubble bubble-lg">
+                                <div>46%</div>
+                                <div style="font-size:10px; font-weight:500;">Graphic</div>
+                            </div>
+                            <div class="bubble bubble-md">
+                                <div>18%</div>
+                                <div style="font-size:9px; font-weight:500;">Digital</div>
+                            </div>
+                            <div class="bubble bubble-sm">
+                                <div>32%</div>
+                                <div style="font-size:9px; font-weight:500;">Callig</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: IMPRESSIONS WORLDWIDE / JANGKAUAN PENGUNJUNG WIDGET -->
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <div class="fit-card">
+                        <div class="card-head">
+                            <span class="card-title">Jangkauan Pengunjung</span>
+                            <span class="h5 text-main mb-0" style="font-family:'Outfit';">231,841</span>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://flagcdn.com/w40/id.png" srcset="https://flagcdn.com/w80/id.png 2x" width="22" height="16" alt="Indonesia" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    <span class="small font-weight-bold">Indonesia</span>
+                                </div>
+                                <span class="font-weight-bold text-main small">43,987</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="22" height="16" alt="Malaysia" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    <span class="small font-weight-bold">Malaysia</span>
+                                </div>
+                                <span class="font-weight-bold text-main small">32,648</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="22" height="16" alt="Singapura" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    <span class="small font-weight-bold">Singapura</span>
+                                </div>
+                                <span class="font-weight-bold text-main small">26,563</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="22" height="16" alt="Jepang" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    <span class="small font-weight-bold">Jepang</span>
+                                </div>
+                                <span class="font-weight-bold text-main small">21,514</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PROJECTS MANAGEMENT TABLE -->
+        <section id="sec-projects" class="section-view">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h1 class="h3 font-weight-bold mb-1" style="font-family: 'Outfit';">Daftar Proyek Portfolio</h1>
+                    <p class="text-sub small mb-0">Kelola dan tampilkan karya portofolio anggota tim dari Supabase</p>
+                </div>
+                <button class="btn-action-primary" onclick="openNewProjectModal()">Tambah Proyek Baru</button>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <input type="text" id="searchInput" name="search_portfolio_query" class="search-box" placeholder="Cari judul atau deskripsi..." autocomplete="off" spellcheck="false" oninput="renderProjects()">
+                <div class="d-flex gap-2">
+                    <button class="filter-pill active" onclick="filterMember('all', this)">Semua</button>
+                    <button class="filter-pill" onclick="filterMember('sidik', this)">Sidik</button>
+                    <button class="filter-pill" onclick="filterMember('aliya', this)">Aliya</button>
+                    <button class="filter-pill" onclick="filterMember('bilqis', this)">Bilqis</button>
+                </div>
+            </div>
+
+            <div class="fit-card p-2">
+                <div class="table-container-fit">
+                    <table class="table-fitonist">
+                        <thead>
+                            <tr>
+                                <th style="width: 18%;">Judul Karya</th>
+                                <th style="width: 14%;">Tag / Kategori</th>
+                                <th style="width: 28%;">Deskripsi</th>
+                                <th style="width: 10%;">Gambar</th>
+                                <th style="width: 10%;">Tanggal</th>
+                                <th style="width: 10%;">Pembuat</th>
+                                <th style="width: 10%;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projectsBody">
+                            <tr><td colspan="7" class="text-center text-sub py-4">Memuat data dari Supabase...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 px-3 pb-2" id="projectsPaginationContainer"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: USER MANAGEMENT TABLE -->
+        <section id="sec-users" class="section-view">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h1 class="h3 font-weight-bold mb-1" style="font-family: 'Outfit';">Kelola Pengguna System</h1>
+                    <p class="text-sub small mb-0">Pengaturan pengguna admin dan superadmin dari Supabase</p>
+                </div>
+                <button class="btn-action-primary" data-toggle="modal" data-target="#userModal">Tambah User Baru</button>
+            </div>
+
+            <div class="fit-card p-2">
+                <div class="table-container-fit">
+                    <table class="table-fitonist">
+                        <thead>
+                            <tr>
+                                <th style="width: 8%;">ID</th>
+                                <th style="width: 30%;">Username</th>
+                                <th style="width: 22%;">Role Akses</th>
+                                <th style="width: 25%;">Tanggal Dibuat</th>
+                                <th style="width: 15%;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersBody">
+                            <tr><td colspan="5" class="text-center text-sub py-4">Memuat data user dari Supabase...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 px-3 pb-2" id="usersPaginationContainer"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL ADD/EDIT PROJECT (SPLIT LAYOUT) -->
+    <div class="modal fade" id="projectModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="pModalTitle" style="font-family:'Outfit';">Tambah Proyek Baru</h5>
+                    <button class="close text-sub" type="button" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="projectForm">
+                        <input type="hidden" id="pId">
+                        <div class="row align-items-stretch">
+                            <!-- LEFT COLUMN: IMAGE PREVIEW & FILE INPUT -->
+                            <div class="col-md-5 d-flex flex-column mb-3 mb-md-0">
+                                <label class="small text-sub font-weight-bold mb-2">Gambar Karya</label>
+                                <div class="image-preview-wrapper flex-grow-1 d-flex align-items-center justify-content-center p-2 rounded" style="background: var(--bg-card-sub); border: 1px dashed var(--border); min-height: 240px; position: relative;">
+                                    <div id="pPreviewContainer" class="w-100 text-center" style="display:block;">
+                                        <img id="pPreviewImg" src="../assets/images/placeholder.jpg" style="max-height: 220px; max-width: 100%; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="btn-action-secondary w-100 text-center mb-0 py-2" style="cursor: pointer;">
+                                        Pilih Gambar (WebP)
+                                        <input type="file" id="pFile" class="d-none" accept="image/*" onchange="previewImage(this)">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT COLUMN: FORM DETAILS -->
+                            <div class="col-md-7 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="form-group mb-3">
+                                        <label class="small text-sub font-weight-bold mb-1">Judul Karya</label>
+                                        <input type="text" id="pTitle" class="form-control" placeholder="Masukkan judul karya" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="small text-sub font-weight-bold mb-1">Deskripsi</label>
+                                        <textarea id="pDesc" class="form-control" rows="3" placeholder="Masukkan rincian penjelasan karya" required></textarea>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="form-group col-md-6 mb-3 mb-md-0">
+                                            <label class="small text-sub font-weight-bold mb-1">Tag / Kategori</label>
+                                            <select id="pTag" class="form-control" required>
+                                                <option value="Digital Art">Digital Art</option>
+                                                <option value="Graphic Design">Graphic Design</option>
+                                                <option value="Calligraphy">Calligraphy</option>
+                                                <option value="UI/UX Design">UI/UX Design</option>
+                                                <option value="Illustration">Illustration</option>
+                                                <option value="General">General</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            <label class="small text-sub font-weight-bold mb-1">Pembuat Karya (Author)</label>
+                                            <select id="pAdmin" class="form-control" required>
+                                                <option value="Sidik">Sidik</option>
+                                                <option value="Aliya">Aliya</option>
+                                                <option value="Bilqis">Bilqis</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="small text-sub font-weight-bold mb-1">Tanggal Karya</label>
+                                        <input type="date" id="pDate" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-action-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn-action-primary" onclick="saveProject()">Simpan Proyek</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+    <!-- UI CONFIRMATION MODAL -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content text-center p-3">
+                <div class="modal-body pt-3 pb-2">
+                    <div class="mb-2 text-warning font-weight-bold" style="font-size: 32px; line-height: 1;">⚠️</div>
+                    <h5 class="font-weight-bold mb-2 text-main" id="confirmModalTitle" style="font-family:'Outfit';">Konfirmasi</h5>
+                    <p class="text-sub small mb-0" id="confirmModalMessage">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pt-0">
+                    <button class="btn-action-secondary px-3" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn-action-primary px-3 text-white bg-danger" id="confirmModalBtn">Ya, Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 1100; display: flex; flex-direction: column; gap: 8px;"></div>
+
+    <!-- MODAL ADD USER -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Logout?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <h5 class="modal-title font-weight-bold" id="uModalTitle" style="font-family:'Outfit';">Tambah User Baru</h5>
+                    <button class="close text-sub" type="button" data-dismiss="modal">×</button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label class="small text-sub font-weight-bold mb-1">Username</label>
+                        <input type="text" id="addUsername" class="form-control" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="small text-sub font-weight-bold mb-1">Password</label>
+                        <input type="password" id="addPassword" class="form-control" placeholder="Masukkan password" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="small text-sub font-weight-bold mb-1">Role Akses</label>
+                        <select id="addRole" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="superadmin">Superadmin</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" onclick="Auth.logout()">Logout</button>
+                    <button class="btn-action-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn-action-primary" onclick="saveUser()">Simpan User</button>
                 </div>
             </div>
         </div>
@@ -150,20 +1137,343 @@
     <script src="../assets/js/config.js"></script>
     <script src="../assets/js/supabaseClient.js"></script>
     <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/imageOptimizer.js"></script>
+    <script src="../assets/js/projects.js"></script>
+    <script src="../assets/js/users.js"></script>
 
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../assets/js/sb-admin-2.min.js"></script>
 
     <script>
         Auth.requireAuth();
-        const user = Auth.getCurrentUser();
+
+        const user = Auth.getUser();
+        const isSuperAdmin = Auth.isSuperAdmin();
+
         if (user && user.username) {
-            document.getElementById('welcomeHeading').textContent = `Hii Welcome, ${user.username}!`;
+            document.getElementById('sidebarUsername').textContent = user.username;
+            const initial = user.username.charAt(0).toUpperCase();
+            document.getElementById('userAvatarInitial').textContent = initial;
+            document.getElementById('sidebarRoleHeader').innerHTML = `<span class="badge-pastel ${isSuperAdmin ? 'badge-purple' : 'badge-rose'}">${isSuperAdmin ? 'Superadmin' : 'Admin'}</span>`;
+
+            if (isSuperAdmin) {
+                document.querySelectorAll('.superadmin-only').forEach(el => el.style.display = '');
+            }
         }
+
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.nav-menu-link').forEach(link => {
+                if (link.getAttribute('data-target') === tabId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            if (tabId === 'sec-users' && typeof UserManagement !== 'undefined') {
+                UserManagement.loadUsers();
+            }
+        }
+
+        // UI Toast Notification & Custom Modal Confirmation Helpers
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            const isSuccess = type === 'success';
+            const borderColor = isSuccess ? 'var(--pastel-green)' : 'var(--pastel-rose)';
+            const icon = isSuccess ? '✓' : '✕';
+            const iconColor = isSuccess ? 'var(--pastel-green)' : 'var(--pastel-rose)';
+
+            toast.style.cssText = `
+                background: var(--bg-card);
+                border: 1px solid ${borderColor};
+                color: var(--text-main);
+                padding: 12px 18px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 500;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-width: 260px;
+                transition: opacity 0.3s ease;
+            `;
+
+            toast.innerHTML = `<span style="color:${iconColor}; font-weight:bold; font-size:15px;">${icon}</span> <span>${escapeHtml(message)}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function showConfirm(title, message, btnText, onConfirm) {
+            document.getElementById('confirmModalTitle').textContent = title || 'Konfirmasi';
+            document.getElementById('confirmModalMessage').textContent = message || 'Apakah Anda yakin?';
+            const actionBtn = document.getElementById('confirmModalBtn');
+            actionBtn.textContent = btnText || 'Ya, Lanjutkan';
+
+            const newBtn = actionBtn.cloneNode(true);
+            actionBtn.parentNode.replaceChild(newBtn, actionBtn);
+
+            newBtn.addEventListener('click', async () => {
+                $('#confirmModal').modal('hide');
+                await onConfirm();
+            });
+
+            $('#confirmModal').modal('show');
+        }
+
+        // Project Table Rendering & Pagination
+        let projectList = [];
+        let activeMemberFilter = 'all';
+        let currentProjectPage = 1;
+        const PROJECTS_PER_PAGE = 10;
+
+        async function renderProjects() {
+            projectList = await Projects.getAll();
+            filterProjects();
+        }
+
+        function filterProjects(resetPage = true) {
+            if (resetPage) currentProjectPage = 1;
+
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+            let items = projectList;
+
+            if (activeMemberFilter !== 'all') {
+                items = items.filter(p => (p.admin || '').toLowerCase().includes(activeMemberFilter));
+            }
+
+            if (query) {
+                items = items.filter(p => (p.title || '').toLowerCase().includes(query) || (p.description || '').toLowerCase().includes(query) || (p.tag || '').toLowerCase().includes(query));
+            }
+
+            const totalItems = items.length;
+            const totalPages = Math.ceil(totalItems / PROJECTS_PER_PAGE) || 1;
+            if (currentProjectPage > totalPages) currentProjectPage = totalPages;
+
+            const startIndex = (currentProjectPage - 1) * PROJECTS_PER_PAGE;
+            const pagedItems = items.slice(startIndex, startIndex + PROJECTS_PER_PAGE);
+
+            const tbody = document.getElementById('projectsBody');
+            if (!items || items.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-sub py-4">Tidak ada karya terdaftar di Supabase</td></tr>';
+                renderProjectsPagination(0, 0, 0, 1);
+                return;
+            }
+
+            tbody.innerHTML = pagedItems.map(p => {
+                const canEdit = Auth.canEditProject(p);
+                const img = p.image || '../assets/images/placeholder.jpg';
+                const tagText = escapeHtml(p.tag || p.category || 'General');
+                return `
+                    <tr>
+                        <td>
+                            <span class="cell-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</span>
+                        </td>
+                        <td>
+                            <span class="badge-fit badge-fit-cyan">${tagText}</span>
+                        </td>
+                        <td>
+                            <div class="cell-desc" title="${escapeHtml(p.description)}">${escapeHtml(p.description)}</div>
+                        </td>
+                        <td>
+                            <img src="${img}" class="table-thumb" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                        </td>
+                        <td class="text-sub font-mono small">${escapeHtml(p.date || '-')}</td>
+                        <td><span class="badge-fit badge-fit-purple">${escapeHtml(p.admin || '-')}</span></td>
+                        <td>
+                            ${canEdit ? `
+                                <div class="d-flex gap-1">
+                                    <button class="btn-action-secondary py-1 px-2" onclick="editProjectModal(${p.id})">Edit</button>
+                                    <button class="btn-action-secondary py-1 px-2 text-danger" onclick="deleteProject(${p.id})">Hapus</button>
+                                </div>
+                            ` : '<span class="text-sub small">Bukan Akses</span>'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            renderProjectsPagination(totalItems, startIndex + 1, Math.min(startIndex + PROJECTS_PER_PAGE, totalItems), totalPages);
+        }
+
+        function renderProjectsPagination(totalItems, start, end, totalPages) {
+            const container = document.getElementById('projectsPaginationContainer');
+            if (!container) return;
+
+            if (totalItems === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let pageBtns = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pageBtns += `<button class="btn-pagination ${i === currentProjectPage ? 'active' : ''} ml-1" onclick="changeProjectPage(${i})">${i}</button>`;
+            }
+
+            container.innerHTML = `
+                <div class="text-sub small">Menampilkan <strong>${start}-${end}</strong> dari <strong>${totalItems}</strong> karya</div>
+                <div class="d-flex align-items-center">
+                    <button class="btn-pagination mr-1" ${currentProjectPage === 1 ? 'disabled' : ''} onclick="changeProjectPage(${currentProjectPage - 1})">Sebelumnya</button>
+                    ${pageBtns}
+                    <button class="btn-pagination ml-1" ${currentProjectPage === totalPages ? 'disabled' : ''} onclick="changeProjectPage(${currentProjectPage + 1})">Selanjutnya</button>
+                </div>
+            `;
+        }
+
+        function changeProjectPage(page) {
+            currentProjectPage = page;
+            filterProjects(false);
+        }
+
+        function filterMember(member, btn) {
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeMemberFilter = member;
+            filterProjects(true);
+        }
+
+        // WebP Image Preview & Compression
+        let tempWebPBlob = null;
+        let tempWebPDataUrl = '';
+
+        async function previewImage(input) {
+            if (input.files && input.files[0]) {
+                try {
+                    const res = await ImageOptimizer.convertToWebP(input.files[0], { maxWidth: 1920, quality: 0.85 });
+                    tempWebPBlob = res.blob;
+                    tempWebPDataUrl = res.dataUrl;
+
+                    document.getElementById('pPreviewImg').src = res.dataUrl;
+                    document.getElementById('pPreviewContainer').style.display = 'block';
+                } catch (e) {
+                    showToast('Gagal mengompresi gambar', 'error');
+                }
+            }
+        }
+
+        async function saveProject() {
+            const id = document.getElementById('pId').value;
+            const title = document.getElementById('pTitle').value.trim();
+            const description = document.getElementById('pDesc').value.trim();
+            const tag = document.getElementById('pTag').value;
+            const admin = document.getElementById('pAdmin').value;
+            const date = document.getElementById('pDate').value;
+
+            if (!title || !description || !date) {
+                showToast('Harap lengkapi semua kolom wajib', 'error');
+                return;
+            }
+
+            let imagePath = tempWebPDataUrl;
+            if (tempWebPBlob) {
+                imagePath = await ImageOptimizer.uploadToStorage(tempWebPBlob, admin, `image_${Date.now()}.webp`);
+            }
+
+            if (id) {
+                const res = await Projects.update(id, title, description, admin, date, tag, imagePath || null);
+                if (res.success) {
+                    showToast('Proyek berhasil diperbarui!');
+                } else {
+                    showToast('Gagal memperbarui proyek: ' + (res.message || ''), 'error');
+                    return;
+                }
+            } else {
+                const res = await Projects.create(title, description, admin, date, tag, imagePath || 'uploads/sidik_porto/DA_galeri1.png');
+                if (res.success) {
+                    showToast('Proyek baru berhasil ditambahkan!');
+                } else {
+                    showToast('Gagal menambahkan proyek: ' + (res.message || ''), 'error');
+                    return;
+                }
+            }
+
+            $('#projectModal').modal('hide');
+            renderProjects();
+        }
+
+        function openNewProjectModal() {
+            tempWebPBlob = null;
+            tempWebPDataUrl = '';
+            document.getElementById('pFile').value = '';
+            document.getElementById('pModalTitle').textContent = 'Tambah Proyek Baru';
+            document.getElementById('pId').value = '';
+            document.getElementById('pTitle').value = '';
+            document.getElementById('pDesc').value = '';
+            document.getElementById('pTag').value = 'Digital Art';
+            document.getElementById('pAdmin').value = 'Sidik';
+            document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('pPreviewImg').src = '../assets/images/placeholder.jpg';
+            document.getElementById('pPreviewContainer').style.display = 'block';
+            $('#projectModal').modal('show');
+        }
+
+        async function editProjectModal(id) {
+            const p = await Projects.getById(id);
+            if (!p) return;
+
+            tempWebPBlob = null;
+            tempWebPDataUrl = '';
+            document.getElementById('pFile').value = '';
+
+            document.getElementById('pModalTitle').textContent = 'Edit Proyek';
+            document.getElementById('pId').value = p.id;
+            document.getElementById('pTitle').value = p.title || '';
+            document.getElementById('pDesc').value = p.description || '';
+            document.getElementById('pTag').value = p.tag || p.category || 'Digital Art';
+            document.getElementById('pAdmin').value = p.admin || 'Sidik';
+            document.getElementById('pDate').value = p.date || '';
+
+            document.getElementById('pPreviewImg').src = p.image || '../assets/images/placeholder.jpg';
+            document.getElementById('pPreviewContainer').style.display = 'block';
+
+            $('#projectModal').modal('show');
+        }
+
+        function deleteProject(id) {
+            showConfirm('Hapus Proyek', 'Apakah Anda yakin ingin menghapus karya ini dari Supabase?', 'Ya, Hapus', async () => {
+                const res = await Projects.remove(id);
+                if (res.success) {
+                    showToast('Proyek berhasil dihapus.');
+                } else {
+                    showToast('Gagal menghapus proyek: ' + (res.message || ''), 'error');
+                }
+                renderProjects();
+            });
+        }
+
+        function saveUser() {
+            UserManagement.addUser();
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash) {
+                history.replaceState(null, null, window.location.pathname);
+            }
+            switchTab('sec-dashboard');
+            renderProjects();
+            if (typeof UserManagement !== 'undefined') {
+                UserManagement.loadUsers();
+            }
+            if (typeof Auth !== 'undefined' && Auth.startSessionTimer) {
+                Auth.startSessionTimer('sessionTimerBadge');
+            }
+        });
     </script>
 </body>
 
 </html>
-

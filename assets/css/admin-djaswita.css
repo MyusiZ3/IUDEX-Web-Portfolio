@@ -1,0 +1,259 @@
+/**
+ * High-End Dark & Light Glassmorphism Theme for IUDEX CMS
+ * Inspired by D'Jaswita AR WebAdmin Design System
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-color: #0c0d0f;
+  --card-bg: #141519;
+  --sidebar-bg: #0c0d0f;
+  --glass-bg: rgba(20, 21, 25, 0.65);
+  --glass-border: #212329;
+  
+  --primary: #ffffff;
+  --accent-soft: rgba(191, 219, 254, 0.15);
+  
+  --text-main: #f3f4f6;
+  --text-dim: #8e939e;
+  --text-dark: #121316;
+  
+  /* Pastel Accent Palette */
+  --pastel-mint: #bbf7d0;
+  --pastel-mint-dark: #14532d;
+  --pastel-peach: #fed7aa;
+  --pastel-peach-dark: #7c2d12;
+  --pastel-lavender: #e9d5ff;
+  --pastel-lavender-dark: #581c87;
+  --pastel-blue: #bfdbfe;
+  --pastel-blue-dark: #1e3a8a;
+  --pastel-coral: #fecaca;
+  --pastel-coral-dark: #7f1d1d;
+  --pastel-lime: #d4fc34;
+
+  --danger: var(--pastel-coral);
+  --success: var(--pastel-mint);
+}
+
+[data-theme="light"] {
+  --bg-color: #f4f5f8;
+  --card-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: #e2e8f0;
+
+  --text-main: #1a202c;
+  --text-dim: #64748b;
+  --text-dark: #ffffff;
+
+  --pastel-mint: #059669;
+  --pastel-peach: #d97706;
+  --pastel-lavender: #7c3aed;
+  --pastel-blue: #2563eb;
+  --pastel-coral: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-main) !important;
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#wrapper #content-wrapper {
+  background-color: var(--bg-color) !important;
+}
+
+/* Sidebar styling */
+.sidebar {
+  background: var(--sidebar-bg) !important;
+  border-right: 1px solid var(--glass-border);
+}
+
+.sidebar .sidebar-brand {
+  color: var(--text-main) !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sidebar .nav-item .nav-link {
+  color: var(--text-dim) !important;
+  border-radius: 12px;
+  margin: 4px 12px;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar .nav-item.active .nav-link,
+.sidebar .nav-item .nav-link:hover {
+  color: var(--text-main) !important;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+}
+
+.sidebar .sidebar-heading {
+  color: var(--text-dim) !important;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* Navbar Topbar */
+.topbar {
+  background: var(--sidebar-bg) !important;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+  color: var(--text-main) !important;
+}
+
+.card-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  color: var(--text-main) !important;
+}
+
+/* Search Box & Controls */
+.djaswita-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  padding: 0 16px;
+  height: 46px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.djaswita-search:focus-within {
+  border-color: var(--pastel-blue);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 20px rgba(191, 219, 254, 0.15);
+}
+
+.djaswita-search input {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* Filter Pills */
+.filter-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.filter-pill:hover, .filter-pill.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+/* Custom Buttons */
+.btn-djaswita-primary {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%) !important;
+  color: #0c0d0f !important;
+  border: none !important;
+  font-weight: 600;
+  border-radius: 12px !important;
+  padding: 10px 22px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+}
+
+.btn-djaswita-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+/* Modals */
+.modal-content {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 20px !important;
+  color: var(--text-main) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-djaswita {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Table */
+.table {
+  color: var(--text-main) !important;
+}
+
+.table thead th {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: var(--text-dim) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.table td, .table th {
+  border-color: var(--glass-border) !important;
+  vertical-align: middle;
+}

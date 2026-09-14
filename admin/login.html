@@ -1,113 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>IUDEX ADMIN Login</title>
+    <title>Admin Login - IUDEX Portfolio</title>
 
-    <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
     <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fc;
+        :root {
+            --bg-body: #0c0d10;
+            --bg-card: #14151a;
+            --border: #22242b;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --accent: #ff4757;
         }
 
-        label {
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 36px 32px;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .brand-subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
             display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-sub);
             margin-bottom: 8px;
         }
 
-        input {
+        .form-input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 32px;
-            box-sizing: border-box;
+            background: #0c0d10;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        input[type="submit"] {
-            background-color: #4e73df;
-            color: #fff;
+        .form-input:focus {
+            border-color: var(--text-sub);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
+            padding: 4px;
         }
 
-        .error-message {
-            color: red;
-            margin-bottom: 10px;
+        .toggle-btn:hover {
+            color: var(--text-main);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert-error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 20px;
             display: none;
+        }
+
+        .footer-link {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+            text-decoration: none;
         }
     </style>
 </head>
 
-<body class="bg-gradient-primary">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block">
-                                <img src="../assets/img/wayang.png" alt="Wayang illustration" style="width: 100%; max-width: 385px;">
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Admin!</h1>
-                                    </div>
-                                    <form id="loginForm">
-                                        <label for="username">Username:</label>
-                                        <input type="text" name="username" id="username" required autocomplete="off">
+<body>
+    <div class="login-card">
+        <div class="brand-title">IUDEX Admin</div>
+        <div class="brand-subtitle">Kelola portofolio tim IUDEX</div>
 
-                                        <label for="password">Password:</label>
-                                        <input type="password" name="password" id="password" required>
+        <div class="alert-error" id="errorMessage">Username atau password tidak sesuai</div>
 
-                                        <div class="error-message" id="errorMessage">
-                                            Password or username incorrect
-                                        </div>
+        <form id="loginForm" autocomplete="off">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Masukkan username" required>
+            </div>
 
-                                        <input type="submit" value="Login">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" class="form-input" placeholder="Masukkan password" required>
+                    <button type="button" class="toggle-btn" id="togglePasswordBtn">Lihat</button>
                 </div>
             </div>
-        </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">Masuk</button>
+        </form>
+
+        <a href="../home.html" class="footer-link">Kembali ke Website</a>
     </div>
 
-    <!-- Supabase SDK & Modules -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../assets/js/config.js"></script>
     <script src="../assets/js/supabaseClient.js"></script>
     <script src="../assets/js/auth.js"></script>
 
-    <script src="../assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../assets/js/sb-admin-2.min.js"></script>
-
     <script>
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('togglePasswordBtn');
+
+        toggleBtn.addEventListener('click', function () {
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+            this.textContent = isPassword ? 'Sembunyi' : 'Lihat';
+        });
+
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const password = passwordInput.value.trim();
             const errEl = document.getElementById('errorMessage');
+            const submitBtn = document.getElementById('submitBtn');
 
             errEl.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Memproses...';
 
-            const result = await Auth.login(username, password);
-            if (result.success) {
-                window.location.href = 'index.html';
-            } else {
-                errEl.textContent = result.message || 'Login gagal';
+            try {
+                const result = await Auth.login(username, password);
+                if (result.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    errEl.textContent = result.message || 'Username atau password tidak sesuai.';
+                    errEl.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Masuk';
+                }
+            } catch (err) {
+                errEl.textContent = 'Gagal terhubung ke server.';
                 errEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Masuk';
             }
         });
     </script>

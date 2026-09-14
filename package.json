@@ -4,8 +4,8 @@
   "description": "IUDEX Web Portfolio with Supabase Integration",
   "main": "home.html",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx serve ."
+    "start": "npx live-server --port=3000",
+    "dev": "npx live-server --port=3000"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
@@ -17,6 +17,7 @@
     "jquery.easing": "^1.4.1"
   },
   "devDependencies": {
+    "live-server": "^1.2.2",
     "sass": "^1.85.0",
     "serve": "^14.2.4"
   }
