@@ -1,0 +1,22 @@
+{
+  "name": "iudex-web-portfolio",
+  "version": "2.0.0",
+  "description": "IUDEX Web Portfolio with Supabase Integration",
+  "main": "home.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@supabase/supabase-js": "^2.49.1",
+    "bootstrap": "^4.6.2",
+    "chart.js": "^2.9.4",
+    "datatables.net-bs4": "^1.10.24",
+    "jquery": "^3.7.1",
+    "jquery.easing": "^1.4.1"
+  },
+  "devDependencies": {
+    "sass": "^1.85.0",
+    "serve": "^14.2.4"
+  }
+}

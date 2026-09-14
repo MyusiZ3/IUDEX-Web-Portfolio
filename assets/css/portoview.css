@@ -1,0 +1,137 @@
+.services-img img {
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+  margin: 0; 
+  padding: 0; 
+  height: 240px; /* Tinggi tetap */
+  width: 370px; /* Lebar tetap, sama dengan tinggi */
+  transition: all .8s ease;
+  object-fit: cover; /* Menjaga rasio aspek dan menutupi kontainer */
+  border-radius: 20px; /* Membuat sudut melengkung */
+}
+
+.services-description p {
+  padding: 16px;
+  font-weight: 200;
+  font-size: 16px;
+  opacity: 0.8;
+}
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.services-description {
+  font-family: poppins;
+  color: whitesmoke;
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+}
+
+.services-content {
+    height: 500px; /* Set the height as per your design */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds container height */
+}
+
+
+.service {
+    margin-bottom: 20px; /* Add some space between service items */
+}
+.services-img img {
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+  margin: 0; /* Menghilangkan margin */
+  padding: 0; /* Menghilangkan padding */
+  height: 240px; /* Tinggi tetap */
+  width: 370px; /* Lebar tetap, sama dengan tinggi */
+  transition: all .8s ease;
+  object-fit: cover; /* Menjaga rasio aspek dan menutupi kontainer */
+  border-radius: 20px; /* Membuat sudut melengkung */
+}
+
+.services-description p {
+  padding: 16px;
+  font-weight: 200;
+  font-size: 16px;
+  opacity: 0.8;
+}
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.services-description {
+  font-family: poppins;
+  color: whitesmoke;
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+}
+
+.services-content {
+    height: 500px; /* Set the height as per your design */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds container height */
+}
+
+/* Additional styling for each service item */
+.service {
+    margin-bottom: 20px; /* Add some space between service items */
+}
+.service {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.8s ease; /* Transition untuk box-shadow */
+}
+
+.service::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  background-color: #c70039;
+  transform-origin: bottom left;
+  transition: all 0.8s ease;
+}
+
+.service:hover::before {
+  width: 200%;
+  height: 100%;
+  transform:skewY(-20deg);
+}
+.service {
+  position: relative;
+  overflow: hidden;
+}
+
+.service::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  background-color: #c70039;
+  transform-origin: bottom left;
+  transition: all 0.8s ease;
+}
+
+.service:hover::before {
+  width: 200%;
+  height: 100%;
+  transform: skewY(35deg);
+}
+
+.service:hover {
+  box-shadow: 0 0 10px #c70039;
+
+}
+
