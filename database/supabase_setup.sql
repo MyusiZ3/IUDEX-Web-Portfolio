@@ -96,32 +96,19 @@ CREATE POLICY "Public Insert Projects" ON public.projects FOR INSERT WITH CHECK 
 CREATE POLICY "Public Update Projects" ON public.projects FOR UPDATE USING (true);
 CREATE POLICY "Public Delete Projects" ON public.projects FOR DELETE USING (true);
 CREATE POLICY "Public Read Users" ON public."user" FOR SELECT USING (true);
+CREATE POLICY "Public Insert Users" ON public."user" FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Update Users" ON public."user" FOR UPDATE USING (true);
+CREATE POLICY "Public Delete Users" ON public."user" FOR DELETE USING (true);
 
 -- --------------------------------------------------------------------
--- 7. INITIAL SEED DATA FOR USERS (WITH ROLES)
+-- 7. INITIAL SEED DATA FOR SUPERADMIN ACCOUNT ONLY
 -- --------------------------------------------------------------------
 INSERT INTO public."user" (username, password, role)
 VALUES
-    ('imyusi', '99qr', 'superadmin'),
-    ('aliya', 'qwerty111', 'admin'),
-    ('bilqis', 'qwerty123', 'admin')
+    ('superadmin', 'superadmin123', 'superadmin')
 ON CONFLICT (username) DO UPDATE SET
+    password = EXCLUDED.password,
     role = EXCLUDED.role;
 
--- Seed Team Members
-INSERT INTO public.team_members (slug, full_name, role, avatar_url, facebook_url, instagram_url, linkedin_url)
-VALUES
-    ('sidik', 'Muhamad Sidik', 'Project Manager, UI/UX, Full-stack Developer & DBA', 'uploads/sidik/sidiiik.JPG', 'https://www.facebook.com/Im.myusi.z3/', 'https://instagram.com/imyusi_', 'https://www.linkedin.com/in/muhamad-sidik-a6757b25b'),
-    ('aliya', 'Aliya Dewi Lestari', 'UI Designer, QA & Content Writer', 'uploads/aliya/Profilealiyafoto.jpg', 'https://www.tiktok.com/@scaramochie_', 'https://www.instagram.com/aeliya____', 'https://www.linkedin.com/in/aliyaad'),
-    ('bilqis', 'RR Bilqis Syiefa Latiefa', 'Responsive Design, Navigation & Content Strategist', 'uploads/bilqis/Profile_Portobilqis.jpeg', 'https://www.facebook.com/bilqis.syifal', 'https://instagram.com/bilqis.syi', 'https://www.linkedin.com/in/bilqis-syifa-l-524626296/')
-ON CONFLICT (slug) DO NOTHING;
+SELECT 'Clean Database Setup Complete! Tables are empty except initial superadmin account.' AS status;
 
--- Seed Projects
-INSERT INTO public.projects (title, slug, description, category, admin, date, image)
-VALUES
-    ('Digital Art Showcase', 'digital-art-showcase', 'Koleksi karya seni digital dan desain karakter.', 'digital-art', 'Sidik', '2024-01-15', 'uploads/sidik_porto/DA_galeri1.png'),
-    ('Lettering & Character Art', 'lettering-character-art', 'Desain typography dan ilustrasi karakter.', 'illustration', 'Aliya', '2024-01-12', 'uploads/aliya/aliyafoto.jpg'),
-    ('Creative Layout & Radio', 'creative-layout-radio', 'Desain tata letak responsif dan media visual.', 'graphic-design', 'Bilqis', '2024-01-08', 'uploads/bilqis/beruang.jpg')
-ON CONFLICT DO NOTHING;
-
-SELECT 'RBAC Schema Setup Complete!' AS status;
