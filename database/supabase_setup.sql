@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS public.projects (
     slug VARCHAR(255),
     description TEXT NOT NULL,
     category VARCHAR(50) DEFAULT 'general',
+    tag VARCHAR(50) DEFAULT 'Digital Art',
     status VARCHAR(20) DEFAULT 'published' CHECK (status IN ('draft', 'published', 'archived')),
     member_id UUID REFERENCES public.team_members(id) ON DELETE SET NULL,
     admin VARCHAR(50) NOT NULL,
@@ -43,6 +44,9 @@ CREATE TABLE IF NOT EXISTS public.projects (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Ensure tag column exists if table was created earlier
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS tag VARCHAR(50) DEFAULT 'Digital Art';
 
 -- --------------------------------------------------------------------
 -- 3. TABLE: "user" (Admin Accounts with Role-Based Access Control)
@@ -89,12 +93,24 @@ ALTER TABLE public.team_members ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."user" ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Public Read Team Members" ON public.team_members;
+DROP POLICY IF EXISTS "Admin Modify Team Members" ON public.team_members;
 CREATE POLICY "Public Read Team Members" ON public.team_members FOR SELECT USING (true);
 CREATE POLICY "Admin Modify Team Members" ON public.team_members FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Public Read Projects" ON public.projects;
+DROP POLICY IF EXISTS "Public Insert Projects" ON public.projects;
+DROP POLICY IF EXISTS "Public Update Projects" ON public.projects;
+DROP POLICY IF EXISTS "Public Delete Projects" ON public.projects;
 CREATE POLICY "Public Read Projects" ON public.projects FOR SELECT USING (true);
 CREATE POLICY "Public Insert Projects" ON public.projects FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public Update Projects" ON public.projects FOR UPDATE USING (true);
 CREATE POLICY "Public Delete Projects" ON public.projects FOR DELETE USING (true);
+
+DROP POLICY IF EXISTS "Public Read Users" ON public."user";
+DROP POLICY IF EXISTS "Public Insert Users" ON public."user";
+DROP POLICY IF EXISTS "Public Update Users" ON public."user";
+DROP POLICY IF EXISTS "Public Delete Users" ON public."user";
 CREATE POLICY "Public Read Users" ON public."user" FOR SELECT USING (true);
 CREATE POLICY "Public Insert Users" ON public."user" FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public Update Users" ON public."user" FOR UPDATE USING (true);
@@ -116,6 +132,11 @@ ON CONFLICT (username) DO UPDATE SET
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('portfolio-images', 'portfolio-images', true)
 ON CONFLICT (id) DO NOTHING;
+
+DROP POLICY IF EXISTS "Public Read Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Public Upload Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Public Update Portfolio Storage" ON storage.objects;
+DROP POLICY IF EXISTS "Public Delete Portfolio Storage" ON storage.objects;
 
 CREATE POLICY "Public Read Portfolio Storage"
 ON storage.objects FOR SELECT

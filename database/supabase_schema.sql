@@ -44,8 +44,10 @@ ALTER TABLE public."user" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 
 -- Create public access policies for reading data
+DROP POLICY IF EXISTS "Allow public read access to projects" ON public.projects;
 CREATE POLICY "Allow public read access to projects" ON public.projects
     FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public read access to user" ON public."user";
 CREATE POLICY "Allow public read access to user" ON public."user"
     FOR SELECT USING (true);
