@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="3RD IUDEX Team Portfolio Hub" />
+    <meta name="author" content="IUDEX Team" />
+    <title>IUDEX Portfolio Hub</title>
+
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/responsifcss.css">
+    <link rel="stylesheet" href="assets/css/portoview.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js"></script>
+
+    <style>
+        .filter-container {
+            text-align: center;
+            margin: 25px 0 35px 0;
+            z-index: 10;
+            position: relative;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 10px 22px;
+            margin: 5px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #3f43fd;
+            border-color: #3f43fd;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(63, 67, 253, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .member-banner {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto 30px auto;
+            max-width: 800px;
+            color: #fff;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .member-banner img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3f43fd;
+            margin-bottom: 12px;
+        }
+
+        .member-banner h3 {
+            margin: 0 0 5px 0;
+            color: #fff;
+        }
+
+        .member-banner p {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .member-socials a {
+            color: #fff;
+            margin: 0 8px;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+
+        .member-socials a:hover {
+            color: #3f43fd;
+        }
+
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(78, 115, 223, 0.9);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        .admin-link:hover {
+            background: #2e59d9;
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div id="all">
+        <div class="cursor"></div>
+        <div id="breaker"></div>
+        <div id="breaker-two"></div>
+
+        <!-- Navigation Bar -->
+        <div id="navigation-content">
+            <div class="logo">
+                <a href="home.html">
+                    <img src="assets/logo_foto/Team Logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="navigation-close">
+                <span class="close-first"></span>
+                <span class="close-second"></span>
+            </div>
+            <div class="navigation-links">
+                <a href="home.html" data-text="HOME">HOME</a>
+                <a href="portfolio.html" data-text="PORTFOLIO">PORTFOLIO</a>
+                <a href="admin/login.html" data-text="ADMIN CMS">ADMIN CMS</a>
+            </div>
+        </div>
+
+        <div id="navigation-bar">
+            <a href="home.html">
+                <img src="assets/logo_foto/Team Logo.png" alt="logo">
+            </a>
+            <div class="menubar">
+                <span class="first-span"></span>
+                <span class="second-span"></span>
+                <span class="third-span"></span>
+            </div>
+        </div>
+
+        <!-- Header & Portfolio Content -->
+        <div id="header">
+            <div id="particles"></div>
+
+            <div id="services">
+                <div class="services-heading wow">
+                    Team <span class="color">Portfolio Hub</span>
+                </div>
+
+                <!-- Interactive Member Filter Tabs -->
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all" onclick="setMemberFilter('all')">✨ All Projects</button>
+                    <button class="filter-btn" data-filter="sidik" onclick="setMemberFilter('sidik')">👨‍💻 Muhamad Sidik</button>
+                    <button class="filter-btn" data-filter="aliya" onclick="setMemberFilter('aliya')">🎨 Aliya Dewi</button>
+                    <button class="filter-btn" data-filter="bilqis" onclick="setMemberFilter('bilqis')">📐 Bilqis Syiefa</button>
+                </div>
+
+                <!-- Active Member Info Banner -->
+                <div class="member-banner" id="memberBanner">
+                    <img id="bannerAvatar" src="" alt="Member Avatar">
+                    <h3 id="bannerName">Member Name</h3>
+                    <p id="bannerRole">Member Role</p>
+                    <div class="member-socials" id="bannerSocials"></div>
+                </div>
+
+                <!-- Dynamic Gallery Grid -->
+                <div class="services-content-wrapper">
+                    <div class="services-content" id="galleryContainer">
+                        <p class="text-white">Loading portfolio items...</p>
+                    </div>
+                </div>
+
+                <div id="skills">
+                    <div class="skills-header"></div>
+                    <p><br></p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-text">
+                    <img src="assets/images/copyright.png" alt="copyright-img" class="images" height="14px"> 2026 | IUDEX Team
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin CMS Access Button -->
+    <a href="admin/login.html" class="admin-link">🔑 CMS Admin</a>
+
+    <!-- Supabase SDK & Modules -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/supabaseClient.js"></script>
+    <script src="assets/js/projects.js"></script>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/particles.js"></script>
+    <script src="assets/js/particles.min.js"></script>
+    <script src="assets/js/index.js"></script>
+
+    <script>
+    // Member profiles metadata
+    const MEMBERS_DATA = {
+        'sidik': {
+            name: 'Muhamad Sidik',
+            role: 'Project Manager, UI/UX, Full-stack Developer & DBA',
+            avatar: 'uploads/sidik/sidiiik.JPG',
+            facebook: 'https://www.facebook.com/Im.myusi.z3/',
+            instagram: 'https://instagram.com/imyusi_',
+            linkedin: 'https://www.linkedin.com/in/muhamad-sidik-a6757b25b'
+        },
+        'aliya': {
+            name: 'Aliya Dewi Lestari',
+            role: 'UI Designer, QA & Content Writer',
+            avatar: 'uploads/aliya/Profilealiyafoto.jpg',
+            facebook: 'https://www.tiktok.com/@scaramochie_',
+            instagram: 'https://www.instagram.com/aeliya____',
+            linkedin: 'https://www.linkedin.com/in/aliyaad'
+        },
+        'bilqis': {
+            name: 'RR Bilqis Syiefa Latiefa',
+            role: 'Responsive Design, Navigation & Content Strategist',
+            avatar: 'uploads/bilqis/Profile_Portobilqis.jpeg',
+            facebook: 'https://www.facebook.com/bilqis.syifal',
+            instagram: 'https://instagram.com/bilqis.syi',
+            linkedin: 'https://www.linkedin.com/in/bilqis-syifa-l-524626296/'
+        }
+    };
+
+    let currentFilter = 'all';
+
+    async function setMemberFilter(filter) {
+        currentFilter = filter.toLowerCase();
+
+        // Update active tab buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            if (btn.getAttribute('data-filter') === currentFilter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Update Member Banner Info
+        const banner = document.getElementById('memberBanner');
+        if (currentFilter !== 'all' && MEMBERS_DATA[currentFilter]) {
+            const m = MEMBERS_DATA[currentFilter];
+            document.getElementById('bannerAvatar').src = m.avatar;
+            document.getElementById('bannerName').textContent = m.name;
+            document.getElementById('bannerRole').textContent = m.role;
+            document.getElementById('bannerSocials').innerHTML = `
+                ${m.facebook ? `<a href="${m.facebook}" target="_blank">Facebook/TikTok</a>` : ''}
+                ${m.instagram ? `<a href="${m.instagram}" target="_blank">Instagram</a>` : ''}
+                ${m.linkedin ? `<a href="${m.linkedin}" target="_blank">LinkedIn</a>` : ''}
+            `;
+            banner.style.display = 'block';
+        } else {
+            banner.style.display = 'none';
+        }
+
+        // Render Dynamic Gallery Items
+        await renderGalleryItems();
+    }
+
+    async function renderGalleryItems() {
+        const container = document.getElementById('galleryContainer');
+        container.innerHTML = '<p class="text-white">Loading projects...</p>';
+
+        try {
+            let projects = [];
+            if (currentFilter === 'all') {
+                projects = await Projects.getAll();
+            } else {
+                projects = await Projects.getByAdmin(currentFilter);
+            }
+
+            if (!projects || projects.length === 0) {
+                container.innerHTML = '<p class="text-white">No projects found for this member.</p>';
+                return;
+            }
+
+            let html = '';
+            projects.forEach(p => {
+                const imgPath = p.image ? p.image : 'assets/images/placeholder.jpg';
+                const adminName = p.admin || 'IUDEX';
+                html += `
+                    <div class="service-one service wow">
+                        <a href="${imgPath}" target="_blank">
+                            <div class="services-img">
+                                <img src="${imgPath}" alt="${escapeHtml(p.title)}">
+                            </div>
+                            <div class="services-description">
+                                <h4>${escapeHtml(p.title)}</h4>
+                                <p style="font-size:12px; color:#3f43fd; font-weight:bold;">By ${escapeHtml(adminName)} • ${escapeHtml(p.date || '')}</p>
+                                <p>${escapeHtml(p.description)}</p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        } catch (err) {
+            console.error('Error rendering projects:', err);
+            container.innerHTML = '<p class="text-white">Failed to load projects.</p>';
+        }
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    // Initialize on page load with URL parameter check (e.g. portfolio.html?member=sidik)
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const memberParam = urlParams.get('member');
+        if (memberParam && MEMBERS_DATA[memberParam.toLowerCase()]) {
+            setMemberFilter(memberParam.toLowerCase());
+        } else {
+            setMemberFilter('all');
+        }
+
+        particlesJS("particles", {
+            "particles": {
+                "number": { "value": 200, "density": { "enable": true, "value_area": 700 } },
+                "color": { "value": "random" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 3 }
+            },
+            "interactivity": { "detect_on": "canvas", "events": { "onclick": { "enable": true, "mode": "push" }, "resize": true } },
+            "retina_detect": true
+        });
+    });
+    </script>
+</body>
+</html>
