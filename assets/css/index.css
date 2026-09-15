@@ -925,11 +925,59 @@ padding-bottom: 40px;
         height: 400px;
         width: 100%;
         position: relative;
+        object-fit: cover;
     }
     .portfolio-image{
         height: 400px;
         width: 40%;
+        position: relative;
+        overflow: hidden;
     }
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s, transform 0.2s;
+    user-select: none;
+    outline: none;
+}
+.slider-btn:hover {
+    background: #c70039;
+    border-color: #c70039;
+    transform: translateY(-50%) scale(1.1);
+}
+.slider-btn.prev-btn {
+    left: 10px;
+}
+.slider-btn.next-btn {
+    right: 10px;
+}
+.slider-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    z-index: 10;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+}
 .portfolio-image img::before{
     content: "";
     height: 100%;
@@ -1251,10 +1299,20 @@ form button:hover{
 }
 .footer .footer-text{
     position: relative;
-    display: inline;
-    font-size: 18px;
-    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f8fafc;
     opacity: 1;
+}
+.footer .footer-text img, .footer-text img.images {
+    height: 14px;
+    width: auto;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+    margin-right: 4px;
 }
 .color-changer{
     height: auto;

@@ -83,7 +83,7 @@ const Projects = {
             date,
             tag: tag || 'Digital Art',
             category: tag || 'general',
-            image: imagePath || 'uploads/sidik_porto/DA_galeri1.png'
+            image: imagePath || null
         };
 
         try {

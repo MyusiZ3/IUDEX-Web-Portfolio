@@ -7,16 +7,25 @@ $(window).on('load',function(){
   gsap.to('#navigation-content',0,{display:"flex",delay:1});
 })
 $(function(){
-  $('.color-panel').on("click",function(e) {
+  var savedColor = localStorage.getItem('iudex-theme-color');
+  if (savedColor) {
+    $('#color-switcher-css').remove();
+    $('head').append('<link id="color-switcher-css" rel="stylesheet" href="assets/css/' + savedColor + '.css">');
+  }
+
+  $(document).on("click", ".color-panel", function(e) {
     e.preventDefault();
-    $('.color-changer').toggleClass('color-changer-active');
-});
-$('.colors a').on("click",function(e) {
-  e.preventDefault();
-  var attr = $(this).attr("title");
-  console.log(attr);
-  $('head').append('<link rel="stylesheet" href="css/'+attr+'.css">');
-});
+    $(this).closest('.color-changer').toggleClass('color-changer-active');
+  });
+
+  $(document).on("click", ".colors a", function(e) {
+    e.preventDefault();
+    var attr = $(this).attr("title");
+    if (!attr) return;
+    localStorage.setItem('iudex-theme-color', attr);
+    $('#color-switcher-css').remove();
+    $('head').append('<link id="color-switcher-css" rel="stylesheet" href="assets/css/' + attr + '.css">');
+  });
 });
 $(function(){
      $('.menubar').on('click',function(){

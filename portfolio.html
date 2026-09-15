@@ -261,6 +261,25 @@
         await renderGalleryItems();
     }
 
+    function parseProjectImages(imageField) {
+        if (!imageField) return [];
+        if (Array.isArray(imageField)) return imageField.filter(Boolean);
+        if (typeof imageField === 'string') {
+            const trimmed = imageField.trim();
+            if (trimmed.startsWith('[')) {
+                try {
+                    const parsed = JSON.parse(trimmed);
+                    if (Array.isArray(parsed)) return parsed.filter(Boolean);
+                } catch(e) {}
+            }
+            if (trimmed.includes(',')) {
+                return trimmed.split(',').map(s => s.trim()).filter(Boolean);
+            }
+            if (trimmed) return [trimmed];
+        }
+        return [];
+    }
+
     async function renderGalleryItems() {
         const container = document.getElementById('galleryContainer');
         container.innerHTML = '<p class="text-white">Loading projects...</p>';
@@ -280,16 +299,19 @@
 
             let html = '';
             projects.forEach(p => {
-                const imgPath = p.image ? p.image : 'assets/images/placeholder.jpg';
+                const images = parseProjectImages(p.image);
+                const imgPath = images.length > 0 ? images[0] : 'assets/images/placeholder.jpg';
                 const adminName = p.admin || 'IUDEX';
+                const photoBadge = images.length > 1 ? `<span style="font-size:11px; background:#c70039; color:#fff; padding:2px 6px; border-radius:10px; margin-left:6px;">${images.length} foto</span>` : '';
+
                 html += `
                     <div class="service-one service wow" style="margin: 15px; display: inline-block; vertical-align: top; text-align: left;">
-                        <a href="${imgPath}" target="_blank" onclick="if(window.Analytics) Analytics.trackProjectView(${p.id || 0});" style="text-decoration: none;">
+                        <a href="${imgPath}" target="_blank" onclick="if(window.Analytics) Analytics.trackProjectView('${p.id}');" style="text-decoration: none;">
                             <div class="services-img">
-                                <img src="${imgPath}" alt="${escapeHtml(p.title)}" onerror="this.onerror=null; this.src='assets/images/placeholder.jpg';">
+                                <img src="${imgPath}" alt="${escapeHtml(p.title)}" style="object-fit: cover;" onerror="this.onerror=null; this.src='assets/images/placeholder.jpg';">
                             </div>
                             <div class="services-description" style="padding: 15px;">
-                                <h2 style="font-size: 20px; color: whitesmoke; margin-bottom: 5px;">${escapeHtml(p.title)}</h2>
+                                <h2 style="font-size: 20px; color: whitesmoke; margin-bottom: 5px;">${escapeHtml(p.title)} ${photoBadge}</h2>
                                 <p style="font-size: 12px; color: #c70039; font-weight: bold; margin-bottom: 8px;">By ${escapeHtml(adminName)} • ${escapeHtml(p.date || '')}</p>
                                 <p style="font-size: 14px; color: #ccc; line-height: 1.4;">${escapeHtml(p.description)}</p>
                             </div>

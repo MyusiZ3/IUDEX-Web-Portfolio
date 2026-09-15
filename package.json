@@ -4,8 +4,9 @@
   "description": "IUDEX Web Portfolio with Supabase Integration",
   "main": "home.html",
   "scripts": {
-    "start": "npx live-server --port=3000",
-    "dev": "npx live-server --port=3000"
+    "start": "npx live-server --port=3000 --entry-file=home.html",
+    "dev": "npx live-server --port=3000 --entry-file=home.html",
+    "build": "node scripts/build-config.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",

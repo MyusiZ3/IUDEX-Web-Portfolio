@@ -304,6 +304,13 @@
             color: var(--text-sub);
             border-radius: 4px;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cal-num:hover {
+            background: rgba(196, 181, 253, 0.25);
+            color: #fff;
         }
 
         .cal-num.highlight {
@@ -317,6 +324,7 @@
             color: #0b0c10;
             font-weight: 800;
             border-radius: 4px;
+            box-shadow: 0 0 10px rgba(196, 181, 253, 0.5);
         }
 
         /* Bar Chart Histogram Widget */
@@ -707,11 +715,11 @@
                     <div class="fit-card">
                         <div class="card-head">
                             <span class="card-title">Tayangan Web (Revenue)</span>
-                            <div class="time-filter">
-                                <button class="time-btn">Today</button>
-                                <button class="time-btn">Week</button>
-                                <button class="time-btn active">Month</button>
-                                <button class="time-btn">Range</button>
+                            <div class="time-filter" id="tayanganTimeFilter">
+                                <button class="time-btn" onclick="changeTayanganFilter('today', this)">Today</button>
+                                <button class="time-btn" onclick="changeTayanganFilter('week', this)">Week</button>
+                                <button class="time-btn active" onclick="changeTayanganFilter('month', this)">Month</button>
+                                <button class="time-btn" onclick="changeTayanganFilter('range', this)">Range</button>
                             </div>
                         </div>
 
@@ -731,11 +739,11 @@
                             <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
                                 <line x1="0" y1="30" x2="400" y2="30" stroke="#232533" stroke-dasharray="3,3"/>
                                 <line x1="0" y1="70" x2="400" y2="70" stroke="#232533" stroke-dasharray="3,3"/>
-                                <path d="M0 80 Q50 20 100 70 T200 40 T300 80 T400 30" fill="none" stroke="#c4b5fd" stroke-width="3"/>
-                                <path d="M0 95 Q60 50 120 85 T240 60 T340 90 T400 50" fill="none" stroke="#fef08a" stroke-width="2" opacity="0.8"/>
+                                <path id="dashWavePath1" d="M0 80 Q50 20 100 70 T200 40 T300 80 T400 30" fill="none" stroke="#c4b5fd" stroke-width="3"/>
+                                <path id="dashWavePath2" d="M0 95 Q60 50 120 85 T240 60 T340 90 T400 50" fill="none" stroke="#fef08a" stroke-width="2" opacity="0.8"/>
                             </svg>
-                            <div style="position: absolute; left: 160px; top: 25px; background: #c4b5fd; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 2,894</div>
-                            <div style="position: absolute; left: 240px; top: 55px; background: #fef08a; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 287</div>
+                            <div id="dashChartPeak1" style="position: absolute; left: 160px; top: 25px; background: #c4b5fd; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 0</div>
+                            <div id="dashChartPeak2" style="position: absolute; left: 240px; top: 55px; background: #fef08a; color: #0b0c10; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700;">• 0</div>
                         </div>
                     </div>
                 </div>
@@ -743,29 +751,17 @@
                 <!-- CARD 2: CALENDAR ACTIVITY WIDGET -->
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="fit-card">
-                        <div class="card-head">
-                            <span class="card-title">September 2026</span>
-                            <span class="text-sub small">↗</span>
+                        <div class="card-head d-flex justify-content-between align-items-center">
+                            <span class="card-title" id="dashCalMonthYear" style="cursor: pointer;" title="Klik untuk reset filter tanggal" onclick="resetCalendarFilter()">September 2026</span>
+                            <span class="text-sub small" style="cursor: pointer;" onclick="resetCalendarFilter()" title="Reset Filter">↺</span>
                         </div>
 
-                        <div class="cal-grid">
-                            <div class="cal-day-name">S</div>
-                            <div class="cal-day-name">M</div>
-                            <div class="cal-day-name">T</div>
-                            <div class="cal-day-name">W</div>
-                            <div class="cal-day-name">T</div>
-                            <div class="cal-day-name">F</div>
-                            <div class="cal-day-name">S</div>
-
-                            <div class="cal-num">1</div><div class="cal-num">2</div><div class="cal-num">3</div><div class="cal-num">4</div><div class="cal-num">5</div><div class="cal-num">6</div><div class="cal-num">7</div>
-                            <div class="cal-num">8</div><div class="cal-num">9</div><div class="cal-num">10</div><div class="cal-num">11</div><div class="cal-num">12</div>
-                            <div class="cal-num highlight">13</div><div class="cal-num highlight">14</div>
-                            <div class="cal-num active-day">15</div><div class="cal-num highlight">16</div><div class="cal-num highlight">17</div><div class="cal-num highlight">18</div><div class="cal-num highlight">19</div>
-                            <div class="cal-num">20</div><div class="cal-num">21</div><div class="cal-num">22</div><div class="cal-num">23</div><div class="cal-num">24</div><div class="cal-num">25</div><div class="cal-num">26</div>
+                        <div class="cal-grid" id="dashCalGrid">
+                            <!-- Populated dynamically via JS -->
                         </div>
 
-                        <div class="mt-3 p-2 text-center rounded" style="background: var(--bg-card-sub); border: 1px solid var(--border);">
-                            <span class="h5 font-weight-bold text-main mb-0" style="font-family:'Outfit';">18,434 Views</span>
+                        <div class="mt-3 p-2 text-center rounded" style="background: var(--bg-card-sub); border: 1px solid var(--border); cursor: pointer;" onclick="resetCalendarFilter()" title="Klik untuk reset ke total bulan ini">
+                            <span id="dashMonthlyViews" class="h5 font-weight-bold text-main mb-0" style="font-family:'Outfit';">0 Views</span>
                         </div>
                     </div>
                 </div>
@@ -775,29 +771,29 @@
                     <div class="fit-card">
                         <div class="card-head">
                             <span class="card-title">Pengunjung Aktif</span>
-                            <div class="time-filter">
-                                <button class="time-btn">Today</button>
-                                <button class="time-btn active">Week</button>
-                                <button class="time-btn">Month</button>
+                            <div class="time-filter" id="activeTimeFilter">
+                                <button class="time-btn" onclick="changeActiveFilter('today', this)">Today</button>
+                                <button class="time-btn active" onclick="changeActiveFilter('week', this)">Week</button>
+                                <button class="time-btn" onclick="changeActiveFilter('month', this)">Month</button>
                             </div>
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <div class="h2 font-weight-bold text-main mb-0" style="font-family:'Outfit';">4,365</div>
+                            <div class="h2 font-weight-bold text-main mb-0" id="dashActiveVisitors" style="font-family:'Outfit';">0</div>
                             <div class="d-flex gap-2">
                                 <div class="p-2 rounded text-center" style="background: var(--bg-card-sub); min-width: 65px;">
-                                    <div class="font-weight-bold text-main">2,876</div>
+                                    <div class="font-weight-bold text-main" id="dashDesktopVisitors">0</div>
                                     <div class="text-sub" style="font-size: 10px;">Desktop</div>
                                 </div>
                                 <div class="p-2 rounded text-center" style="background: var(--bg-card-sub); min-width: 65px;">
-                                    <div class="font-weight-bold text-main">1,489</div>
+                                    <div class="font-weight-bold text-main" id="dashMobileVisitors">0</div>
                                     <div class="text-sub" style="font-size: 10px;">Mobile</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Bar Chart Histogram -->
-                        <div class="histogram-bar-group">
+                        <div class="histogram-bar-group" id="dashHistogramGroup">
                             <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 40%;"></div></div><span class="bar-label">Mon</span></div>
                             <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 60%;"></div></div><span class="bar-label">Tue</span></div>
                             <div class="bar-col"><div class="bar-fill-track"><div class="bar-fill" style="height: 50%;"></div></div><span class="bar-label">Wed</span></div>
@@ -820,39 +816,8 @@
                             <span class="badge-fit badge-fit-purple">Anggota</span>
                         </div>
 
-                        <div class="d-flex flex-column gap-3">
-                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="../uploads/sidik_porto/DA_galeri1.png" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
-                                    <div>
-                                        <div class="font-weight-bold text-main small mb-1">Digital Art Showcase</div>
-                                        <span class="badge-fit badge-fit-yellow" style="font-size: 10px;">Sidik</span>
-                                    </div>
-                                </div>
-                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">39k</div>
-                            </div>
-
-                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="../uploads/aliya/aliyafoto.jpg" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
-                                    <div>
-                                        <div class="font-weight-bold text-main small mb-1">Lettering Art</div>
-                                        <span class="badge-fit badge-fit-green" style="font-size: 10px;">Aliya</span>
-                                    </div>
-                                </div>
-                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">31k</div>
-                            </div>
-
-                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="../uploads/bilqis/beruang.jpg" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
-                                    <div>
-                                        <div class="font-weight-bold text-main small mb-1">Creative Layout</div>
-                                        <span class="badge-fit badge-fit-rose" style="font-size: 10px;">Bilqis</span>
-                                    </div>
-                                </div>
-                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">27k</div>
-                            </div>
+                        <div class="d-flex flex-column gap-3" id="dashPopularProjects">
+                            <div class="text-sub small">Memuat karya terpopuler...</div>
                         </div>
                     </div>
                 </div>
@@ -865,18 +830,10 @@
                             <span class="text-sub small">🕒</span>
                         </div>
 
-                        <div class="bubble-container">
+                        <div class="bubble-container" id="dashCategoriesBubble">
                             <div class="bubble bubble-lg">
-                                <div>46%</div>
-                                <div style="font-size:10px; font-weight:500;">Graphic</div>
-                            </div>
-                            <div class="bubble bubble-md">
-                                <div>18%</div>
-                                <div style="font-size:9px; font-weight:500;">Digital</div>
-                            </div>
-                            <div class="bubble bubble-sm">
-                                <div>32%</div>
-                                <div style="font-size:9px; font-weight:500;">Callig</div>
+                                <div>0%</div>
+                                <div style="font-size:10px; font-weight:500;">General</div>
                             </div>
                         </div>
                     </div>
@@ -887,38 +844,11 @@
                     <div class="fit-card">
                         <div class="card-head">
                             <span class="card-title">Jangkauan Pengunjung</span>
-                            <span class="h5 text-main mb-0" style="font-family:'Outfit';">231,841</span>
+                            <span id="dashTotalReach" class="h5 text-main mb-0" style="font-family:'Outfit';">0</span>
                         </div>
 
-                        <div class="d-flex flex-column gap-2">
-                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://flagcdn.com/w40/id.png" srcset="https://flagcdn.com/w80/id.png 2x" width="22" height="16" alt="Indonesia" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
-                                    <span class="small font-weight-bold">Indonesia</span>
-                                </div>
-                                <span class="font-weight-bold text-main small">43,987</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://flagcdn.com/w40/my.png" srcset="https://flagcdn.com/w80/my.png 2x" width="22" height="16" alt="Malaysia" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
-                                    <span class="small font-weight-bold">Malaysia</span>
-                                </div>
-                                <span class="font-weight-bold text-main small">32,648</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://flagcdn.com/w40/sg.png" srcset="https://flagcdn.com/w80/sg.png 2x" width="22" height="16" alt="Singapura" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
-                                    <span class="small font-weight-bold">Singapura</span>
-                                </div>
-                                <span class="font-weight-bold text-main small">26,563</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
-                                <div class="d-flex align-items-center">
-                                    <img src="https://flagcdn.com/w40/jp.png" srcset="https://flagcdn.com/w80/jp.png 2x" width="22" height="16" alt="Jepang" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
-                                    <span class="small font-weight-bold">Jepang</span>
-                                </div>
-                                <span class="font-weight-bold text-main small">21,514</span>
-                            </div>
+                        <div class="d-flex flex-column gap-2" id="dashCountryReachList">
+                            <div class="text-sub small">Memuat data jangkauan...</div>
                         </div>
                     </div>
                 </div>
@@ -976,7 +906,7 @@
                     <h1 class="h3 font-weight-bold mb-1" style="font-family: 'Outfit';">Kelola Pengguna System</h1>
                     <p class="text-sub small mb-0">Pengaturan pengguna admin dan superadmin dari Supabase</p>
                 </div>
-                <button class="btn-action-primary" data-toggle="modal" data-target="#userModal">Tambah User Baru</button>
+                <button class="btn-action-primary" onclick="UserManagement.openNewModal()">Tambah User Baru</button>
             </div>
 
             <div class="fit-card p-2">
@@ -1017,15 +947,15 @@
                             <!-- LEFT COLUMN: IMAGE PREVIEW & FILE INPUT -->
                             <div class="col-md-5 d-flex flex-column mb-3 mb-md-0">
                                 <label class="small text-sub font-weight-bold mb-2">Gambar Karya</label>
-                                <div class="image-preview-wrapper flex-grow-1 d-flex align-items-center justify-content-center p-2 rounded" style="background: var(--bg-card-sub); border: 1px dashed var(--border); min-height: 240px; position: relative;">
-                                    <div id="pPreviewContainer" class="w-100 text-center" style="display:block;">
-                                        <img id="pPreviewImg" src="../assets/images/placeholder.jpg" style="max-height: 220px; max-width: 100%; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                <div class="image-preview-wrapper flex-grow-1 d-flex align-items-center justify-content-center p-2 rounded" style="background: var(--bg-card-sub); border: 1px dashed var(--border); min-height: 240px; position: relative; overflow-y: auto;">
+                                    <div id="pPreviewContainer" class="w-100 d-flex flex-wrap gap-2 justify-content-center align-items-center" style="display:flex;">
+                                        <!-- Multi-image thumbnails rendered dynamically -->
                                     </div>
                                 </div>
                                 <div class="mt-2">
                                     <label class="btn-action-secondary w-100 text-center mb-0 py-2" style="cursor: pointer;">
-                                        Pilih Gambar (WebP)
-                                        <input type="file" id="pFile" class="d-none" accept="image/*" onchange="previewImage(this)">
+                                        <i class="bi bi-images me-1"></i> Pilih Gambar Karya (Bisa > 1)
+                                        <input type="file" id="pFile" class="d-none" accept="image/*" multiple onchange="previewImage(this)">
                                     </label>
                                 </div>
                             </div>
@@ -1108,6 +1038,7 @@
                     <button class="close text-sub" type="button" data-dismiss="modal">×</button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="uId">
                     <div class="form-group mb-3">
                         <label class="small text-sub font-weight-bold mb-1">Username</label>
                         <input type="text" id="addUsername" class="form-control" placeholder="Masukkan username" required>
@@ -1115,6 +1046,7 @@
                     <div class="form-group mb-3">
                         <label class="small text-sub font-weight-bold mb-1">Password</label>
                         <input type="password" id="addPassword" class="form-control" placeholder="Masukkan password" required>
+                        <small id="uPasswordHelp" class="form-text text-sub mt-1" style="display: none; font-size: 11px;">Kosongkan jika tidak ingin mengubah password saat edit.</small>
                     </div>
                     <div class="form-group mb-3">
                         <label class="small text-sub font-weight-bold mb-1">Role Akses</label>
@@ -1245,6 +1177,36 @@
             filterProjects();
         }
 
+        function parseProjectImages(imageField) {
+            if (!imageField) return [];
+            if (Array.isArray(imageField)) return imageField.filter(Boolean);
+            if (typeof imageField === 'string') {
+                const trimmed = imageField.trim();
+                if (trimmed.startsWith('[')) {
+                    try {
+                        const parsed = JSON.parse(trimmed);
+                        if (Array.isArray(parsed)) return parsed.filter(Boolean);
+                    } catch(e) {}
+                }
+                if (trimmed.includes(',')) {
+                    return trimmed.split(',').map(s => s.trim()).filter(Boolean);
+                }
+                if (trimmed) return [trimmed];
+            }
+            return [];
+        }
+
+        function fixImagePath(path) {
+            if (!path) return '../assets/images/placeholder.jpg';
+            if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') || path.startsWith('/')) {
+                return path;
+            }
+            if (path.startsWith('../')) {
+                return path;
+            }
+            return '../' + path;
+        }
+
         function filterProjects(resetPage = true) {
             if (resetPage) currentProjectPage = 1;
 
@@ -1273,37 +1235,42 @@
                 return;
             }
 
-            tbody.innerHTML = pagedItems.map(p => {
-                const canEdit = Auth.canEditProject(p);
-                const img = p.image || '../assets/images/placeholder.jpg';
-                const tagText = escapeHtml(p.tag || p.category || 'General');
-                return `
-                    <tr>
-                        <td>
-                            <span class="cell-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</span>
-                        </td>
-                        <td>
-                            <span class="badge-fit badge-fit-cyan">${tagText}</span>
-                        </td>
-                        <td>
-                            <div class="cell-desc" title="${escapeHtml(p.description)}">${escapeHtml(p.description)}</div>
-                        </td>
-                        <td>
-                            <img src="${img}" class="table-thumb" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
-                        </td>
-                        <td class="text-sub font-mono small">${escapeHtml(p.date || '-')}</td>
-                        <td><span class="badge-fit badge-fit-purple">${escapeHtml(p.admin || '-')}</span></td>
-                        <td>
-                            ${canEdit ? `
-                                <div class="d-flex gap-1">
-                                    <button class="btn-action-secondary py-1 px-2" onclick="editProjectModal(${p.id})">Edit</button>
-                                    <button class="btn-action-secondary py-1 px-2 text-danger" onclick="deleteProject(${p.id})">Hapus</button>
-                                </div>
-                            ` : '<span class="text-sub small">Bukan Akses</span>'}
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+        tbody.innerHTML = pagedItems.map(p => {
+            const canEdit = Auth.canEditProject(p);
+            const imgs = parseProjectImages(p.image);
+            const mainImg = imgs.length > 0 ? fixImagePath(imgs[0]) : '../assets/images/placeholder.jpg';
+            const badgeCount = imgs.length > 1 ? `<span class="badge bg-secondary ms-1 small" title="${imgs.length} gambar">${imgs.length} foto</span>` : '';
+            const tagText = escapeHtml(p.tag || p.category || 'General');
+            return `
+                <tr>
+                    <td>
+                        <span class="cell-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</span>
+                    </td>
+                    <td>
+                        <span class="badge-fit badge-fit-cyan">${tagText}</span>
+                    </td>
+                    <td>
+                        <div class="cell-desc" title="${escapeHtml(p.description)}">${escapeHtml(p.description)}</div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${mainImg}" class="table-thumb" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                            ${badgeCount}
+                        </div>
+                    </td>
+                    <td class="text-sub font-mono small">${escapeHtml(p.date || '-')}</td>
+                    <td><span class="badge-fit badge-fit-purple">${escapeHtml(p.admin || '-')}</span></td>
+                    <td>
+                        ${canEdit ? `
+                            <div class="d-flex gap-1">
+                                <button class="btn-action-secondary py-1 px-2" onclick="editProjectModal(${p.id})">Edit</button>
+                                <button class="btn-action-secondary py-1 px-2 text-danger" onclick="deleteProject(${p.id})">Hapus</button>
+                            </div>
+                        ` : '<span class="text-sub small">Bukan Akses</span>'}
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
             renderProjectsPagination(totalItems, startIndex + 1, Math.min(startIndex + PROJECTS_PER_PAGE, totalItems), totalPages);
         }
@@ -1344,22 +1311,57 @@
             filterProjects(true);
         }
 
-        // WebP Image Preview & Compression
-        let tempWebPBlob = null;
-        let tempWebPDataUrl = '';
+        // WebP Multi-Image Management & Optimization
+        let projectImagesState = [];
+
+        function renderImageThumbnails() {
+            const container = document.getElementById('pPreviewContainer');
+            if (!container) return;
+            if (projectImagesState.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center w-100 py-4 text-white-50">
+                        <img src="../assets/images/placeholder.jpg" style="max-height: 100px; border-radius: 8px; opacity: 0.5;">
+                        <div class="small mt-2">Belum ada gambar terpilih</div>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = projectImagesState.map((img, idx) => {
+                const src = img.type === 'new' ? img.dataUrl : fixImagePath(img.url);
+                return `
+                    <div class="position-relative d-inline-block m-1" style="width: 80px; height: 80px;">
+                        <img src="${src}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2);" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                        <button type="button" class="btn btn-danger btn-sm position-absolute d-flex align-items-center justify-content-center" style="top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; padding: 0; font-size: 13px; line-height: 1;" onclick="removeImageThumbnail(${idx})" title="Hapus foto ini">&times;</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function removeImageThumbnail(index) {
+            projectImagesState.splice(index, 1);
+            renderImageThumbnails();
+        }
 
         async function previewImage(input) {
-            if (input.files && input.files[0]) {
-                try {
-                    const res = await ImageOptimizer.convertToWebP(input.files[0], { maxWidth: 1920, quality: 0.85 });
-                    tempWebPBlob = res.blob;
-                    tempWebPDataUrl = res.dataUrl;
-
-                    document.getElementById('pPreviewImg').src = res.dataUrl;
-                    document.getElementById('pPreviewContainer').style.display = 'block';
-                } catch (e) {
-                    showToast('Gagal mengompresi gambar', 'error');
+            if (input.files && input.files.length > 0) {
+                showToast(`Memproses ${input.files.length} gambar...`, 'info');
+                for (let i = 0; i < input.files.length; i++) {
+                    const file = input.files[i];
+                    try {
+                        const res = await ImageOptimizer.convertToWebP(file, { maxWidth: 1920, quality: 0.85 });
+                        projectImagesState.push({
+                            type: 'new',
+                            blob: res.blob,
+                            dataUrl: res.dataUrl,
+                            name: res.fileName || `img_${Date.now()}_${i}.webp`
+                        });
+                    } catch (e) {
+                        console.error('Failed to optimize image:', e);
+                        showToast(`Gagal mengompresi ${file.name}`, 'error');
+                    }
                 }
+                input.value = '';
+                renderImageThumbnails();
             }
         }
 
@@ -1376,13 +1378,32 @@
                 return;
             }
 
-            let imagePath = tempWebPDataUrl;
-            if (tempWebPBlob) {
-                imagePath = await ImageOptimizer.uploadToStorage(tempWebPBlob, admin, `image_${Date.now()}.webp`);
+            const uploadedUrls = [];
+            for (let i = 0; i < projectImagesState.length; i++) {
+                const item = projectImagesState[i];
+                if (item.type === 'existing') {
+                    uploadedUrls.push(item.url);
+                } else if (item.type === 'new') {
+                    try {
+                        const url = await ImageOptimizer.uploadToStorage(item.blob, admin, item.name || `image_${Date.now()}_${i}.webp`);
+                        if (url) uploadedUrls.push(url);
+                    } catch (err) {
+                        console.error('Upload error:', err);
+                        // Fallback to dataUrl if offline / storage fails
+                        if (item.dataUrl) uploadedUrls.push(item.dataUrl);
+                    }
+                }
+            }
+
+            let finalImagePath = null;
+            if (uploadedUrls.length === 1) {
+                finalImagePath = uploadedUrls[0];
+            } else if (uploadedUrls.length > 1) {
+                finalImagePath = JSON.stringify(uploadedUrls);
             }
 
             if (id) {
-                const res = await Projects.update(id, title, description, admin, date, tag, imagePath || null);
+                const res = await Projects.update(id, title, description, admin, date, tag, finalImagePath);
                 if (res.success) {
                     showToast('Proyek berhasil diperbarui!');
                 } else {
@@ -1390,7 +1411,7 @@
                     return;
                 }
             } else {
-                const res = await Projects.create(title, description, admin, date, tag, imagePath || 'uploads/sidik_porto/DA_galeri1.png');
+                const res = await Projects.create(title, description, admin, date, tag, finalImagePath);
                 if (res.success) {
                     showToast('Proyek baru berhasil ditambahkan!');
                 } else {
@@ -1404,8 +1425,7 @@
         }
 
         function openNewProjectModal() {
-            tempWebPBlob = null;
-            tempWebPDataUrl = '';
+            projectImagesState = [];
             document.getElementById('pFile').value = '';
             document.getElementById('pModalTitle').textContent = 'Tambah Proyek Baru';
             document.getElementById('pId').value = '';
@@ -1414,8 +1434,7 @@
             document.getElementById('pTag').value = 'Digital Art';
             document.getElementById('pAdmin').value = 'Sidik';
             document.getElementById('pDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('pPreviewImg').src = '../assets/images/placeholder.jpg';
-            document.getElementById('pPreviewContainer').style.display = 'block';
+            renderImageThumbnails();
             $('#projectModal').modal('show');
         }
 
@@ -1423,8 +1442,7 @@
             const p = await Projects.getById(id);
             if (!p) return;
 
-            tempWebPBlob = null;
-            tempWebPDataUrl = '';
+            projectImagesState = [];
             document.getElementById('pFile').value = '';
 
             document.getElementById('pModalTitle').textContent = 'Edit Proyek';
@@ -1435,9 +1453,12 @@
             document.getElementById('pAdmin').value = p.admin || 'Sidik';
             document.getElementById('pDate').value = p.date || '';
 
-            document.getElementById('pPreviewImg').src = p.image || '../assets/images/placeholder.jpg';
-            document.getElementById('pPreviewContainer').style.display = 'block';
+            const imgs = parseProjectImages(p.image);
+            imgs.forEach(url => {
+                projectImagesState.push({ type: 'existing', url: url });
+            });
 
+            renderImageThumbnails();
             $('#projectModal').modal('show');
         }
 
@@ -1454,22 +1475,320 @@
         }
 
         function saveUser() {
-            UserManagement.addUser();
+            UserManagement.saveUser();
         }
 
         function escapeHtml(str) {
             return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        let currentTayanganRange = 'month';
+        let currentActiveRange = 'week';
+        let selectedCalendarDate = null;
+        let latestStatsData = null;
+
+        function changeTayanganFilter(range, btn) {
+            selectedCalendarDate = null;
+            currentTayanganRange = range;
+            const container = document.getElementById('tayanganTimeFilter');
+            if (container) {
+                container.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            }
+            if (btn) btn.classList.add('active');
+            updateDashboardAnalytics();
+        }
+
+        function changeActiveFilter(range, btn) {
+            currentActiveRange = range;
+            const container = document.getElementById('activeTimeFilter');
+            if (container) {
+                container.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            }
+            if (btn) btn.classList.add('active');
+            updateDashboardAnalytics();
+        }
+
+        function renderInteractiveCalendar(stats) {
+            latestStatsData = stats;
+            const calGrid = document.getElementById('dashCalGrid');
+            const calMonthYear = document.getElementById('dashCalMonthYear');
+            const monthlyEl = document.getElementById('dashMonthlyViews');
+            if (!calGrid) return;
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            if (calMonthYear) {
+                calMonthYear.textContent = `${monthNames[month]} ${year}`;
+            }
+
+            const firstDayIndex = new Date(year, month, 1).getDay(); // 0 for Sunday
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const todayDay = now.getDate();
+
+            let html = `
+                <div class="cal-day-name">S</div>
+                <div class="cal-day-name">M</div>
+                <div class="cal-day-name">T</div>
+                <div class="cal-day-name">W</div>
+                <div class="cal-day-name">T</div>
+                <div class="cal-day-name">F</div>
+                <div class="cal-day-name">S</div>
+            `;
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                html += `<div class="cal-num empty" style="opacity: 0.15; cursor: default;"></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const viewsOnDay = (stats.dailyMap && stats.dailyMap[dateStr]) || 0;
+                
+                let classes = 'cal-num';
+                if (selectedCalendarDate === dateStr) {
+                    classes += ' active-day';
+                } else if (day === todayDay && !selectedCalendarDate) {
+                    classes += ' active-day';
+                } else if (viewsOnDay > 0) {
+                    classes += ' highlight';
+                }
+
+                html += `<div class="${classes}" title="${viewsOnDay} views pada ${day} ${monthNames[month]}" onclick="onCalendarDayClick('${dateStr}', ${day}, ${viewsOnDay})">${day}</div>`;
+            }
+
+            calGrid.innerHTML = html;
+
+            if (monthlyEl) {
+                if (selectedCalendarDate) {
+                    const selDayNum = parseInt(selectedCalendarDate.split('-')[2], 10);
+                    const selViews = (stats.dailyMap && stats.dailyMap[selectedCalendarDate]) || 0;
+                    monthlyEl.innerHTML = `${selViews.toLocaleString()} Views <span style="font-size:11px; font-weight:normal; color:#c4b5fd;">(${selDayNum} ${monthNames[month]} ✕)</span>`;
+                } else {
+                    monthlyEl.textContent = `${(stats.monthlyViews || 0).toLocaleString()} Views (Bulan Ini)`;
+                }
+            }
+        }
+
+        function onCalendarDayClick(dateStr, dayNum, dayViews) {
+            if (selectedCalendarDate === dateStr) {
+                selectedCalendarDate = null; // Toggle off
+            } else {
+                selectedCalendarDate = dateStr;
+            }
+
+            if (latestStatsData) {
+                renderInteractiveCalendar(latestStatsData);
+                
+                const totalEl = document.getElementById('dashTotalViews');
+                if (totalEl) {
+                    if (selectedCalendarDate) {
+                        totalEl.textContent = dayViews.toLocaleString();
+                    } else {
+                        totalEl.textContent = (latestStatsData.totalViews || 0).toLocaleString();
+                    }
+                }
+            }
+        }
+
+        function resetCalendarFilter() {
+            selectedCalendarDate = null;
+            if (latestStatsData) {
+                renderInteractiveCalendar(latestStatsData);
+                const totalEl = document.getElementById('dashTotalViews');
+                if (totalEl) totalEl.textContent = (latestStatsData.totalViews || 0).toLocaleString();
+            }
+        }
+
         async function updateDashboardAnalytics() {
             if (typeof Analytics === 'undefined') return;
-            const stats = await Analytics.getStats();
+            const stats = await Analytics.getStats(currentTayanganRange, currentActiveRange);
 
+            // 1. Tayangan Web (Total & Daily Views & Dynamic SVG Graph)
             const totalEl = document.getElementById('dashTotalViews');
-            if (totalEl) totalEl.textContent = (stats.totalViews || 0).toLocaleString();
+            if (totalEl) {
+                if (selectedCalendarDate && stats.dailyMap) {
+                    totalEl.textContent = (stats.dailyMap[selectedCalendarDate] || 0).toLocaleString();
+                } else {
+                    totalEl.textContent = (stats.totalViews || 0).toLocaleString();
+                }
+            }
 
             const dailyEl = document.getElementById('dashDailyViews');
             if (dailyEl) dailyEl.textContent = (stats.dailyViews || 0).toLocaleString();
+
+            const path1El = document.getElementById('dashWavePath1');
+            const path2El = document.getElementById('dashWavePath2');
+            const peak1El = document.getElementById('dashChartPeak1');
+            const peak2El = document.getElementById('dashChartPeak2');
+
+            const buildSVGPoints = (trendData, minY, maxY) => {
+                const data = trendData || [0, 0, 0, 0, 0, 0, 0];
+                const maxVal = Math.max(...data, 1);
+                const allEqual = data.every(v => v === data[0]);
+
+                return data.map((val, idx) => {
+                    const x = (idx / 6) * 380 + 10;
+                    let y;
+                    if (allEqual) {
+                        y = val === 0 ? maxY : (minY + maxY) / 2;
+                    } else {
+                        y = maxY - ((val / maxVal) * (maxY - minY));
+                    }
+                    return { x, y, val };
+                });
+            };
+
+            const buildSmoothPath = (points) => {
+                if (!points || points.length === 0) return 'M10 95 L390 95';
+                let d = `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`;
+                for (let i = 0; i < points.length - 1; i++) {
+                    const curr = points[i];
+                    const next = points[i + 1];
+                    const cx = (curr.x + next.x) / 2;
+                    d += ` C ${cx.toFixed(1)} ${curr.y.toFixed(1)}, ${cx.toFixed(1)} ${next.y.toFixed(1)}, ${next.x.toFixed(1)} ${next.y.toFixed(1)}`;
+                }
+                return d;
+            };
+
+            if (path1El) {
+                const points1 = buildSVGPoints(stats.tayanganTrend, 25, 95);
+                path1El.setAttribute('d', buildSmoothPath(points1));
+
+                let peak1 = points1[0];
+                points1.forEach(pt => { if (pt.val >= peak1.val) peak1 = pt; });
+                if (peak1El) {
+                    peak1El.textContent = `• ${(stats.totalViews || peak1.val || 0).toLocaleString()}`;
+                    peak1El.style.left = `${Math.min(Math.max(peak1.x - 20, 10), 340)}px`;
+                    peak1El.style.top = `${Math.max(peak1.y - 14, 5)}px`;
+                }
+            }
+
+            if (path2El) {
+                const points2 = buildSVGPoints(stats.activeTrend, 40, 105);
+                path2El.setAttribute('d', buildSmoothPath(points2));
+
+                let peak2 = points2[0];
+                points2.forEach(pt => { if (pt.val >= peak2.val) peak2 = pt; });
+                if (peak2El) {
+                    peak2El.textContent = `• ${(stats.dailyViews || peak2.val || 0).toLocaleString()}`;
+                    peak2El.style.left = `${Math.min(Math.max(peak2.x - 20, 10), 340)}px`;
+                    peak2El.style.top = `${Math.max(peak2.y - 14, 25)}px`;
+                }
+            }
+
+            // 2. Kalender Interactive Rendering
+            renderInteractiveCalendar(stats);
+
+            // 3. Pengunjung Aktif (Active Visitors & Devices & Histogram)
+            const activeEl = document.getElementById('dashActiveVisitors');
+            if (activeEl) activeEl.textContent = (stats.activeVisitors || 0).toLocaleString();
+
+            const desktopEl = document.getElementById('dashDesktopVisitors');
+            if (desktopEl) desktopEl.textContent = (stats.desktopVisitors || 0).toLocaleString();
+
+            const mobileEl = document.getElementById('dashMobileVisitors');
+            if (mobileEl) mobileEl.textContent = (stats.mobileVisitors || 0).toLocaleString();
+
+            // Histogram Bars (Mon-Sun)
+            const histogramGroup = document.getElementById('dashHistogramGroup');
+            if (histogramGroup && stats.weeklyHistogram) {
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                const counts = days.map(d => stats.weeklyHistogram[d] || 0);
+                const maxCount = Math.max(...counts, 1);
+
+                let html = '';
+                days.forEach((day, idx) => {
+                    const c = counts[idx];
+                    const heightPercent = Math.max(Math.round((c / maxCount) * 100), 10);
+                    const colorClass = idx === 4 ? 'purple' : (idx === 5 ? 'yellow' : '');
+                    html += `<div class="bar-col"><div class="bar-fill-track"><div class="bar-fill ${colorClass}" style="height: ${heightPercent}%;"></div></div><span class="bar-label">${day}</span></div>`;
+                });
+                histogramGroup.innerHTML = html;
+            }
+
+            // 4. Karya Terpopuler (Popular Projects)
+            const popularContainer = document.getElementById('dashPopularProjects');
+            if (popularContainer) {
+                if (stats.popularProjects && stats.popularProjects.length > 0) {
+                    let html = '';
+                    const colorBadges = { Sidik: 'yellow', Aliya: 'green', Bilqis: 'rose' };
+                    stats.popularProjects.forEach(p => {
+                        const img = fixImagePath(p.image);
+                        const adminName = p.admin || 'IUDEX';
+                        const colorClass = colorBadges[adminName] || 'purple';
+                        const viewsFormatted = (p.view_count || 0) > 999 ? ((p.view_count || 0) / 1000).toFixed(1) + 'k' : (p.view_count || 0);
+
+                        html += `
+                            <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: var(--bg-card-sub);">
+                                <div class="d-flex align-items-center">
+                                    <img src="${img}" class="mr-3" style="width: 44px; height: 44px; border-radius: 10px; object-fit: cover; flex-shrink: 0;" onerror="this.onerror=null; this.src='../assets/images/placeholder.jpg';">
+                                    <div>
+                                        <div class="font-weight-bold text-main small mb-1">${escapeHtml(p.title)}</div>
+                                        <span class="badge-fit badge-fit-${colorClass}" style="font-size: 10px;">${escapeHtml(adminName)}</span>
+                                    </div>
+                                </div>
+                                <div class="h6 font-weight-bold text-main mb-0" style="font-family:'Outfit';">${viewsFormatted}</div>
+                            </div>
+                        `;
+                    });
+                    popularContainer.innerHTML = html;
+                } else {
+                    popularContainer.innerHTML = '<div class="text-sub small">Belum ada karya terpopuler.</div>';
+                }
+            }
+
+            // 5. Kategori Karya (Categories Bubble Chart)
+            const categoriesContainer = document.getElementById('dashCategoriesBubble');
+            if (categoriesContainer && stats.categories && stats.categories.length > 0) {
+                const bubbleClasses = ['bubble-lg', 'bubble-md', 'bubble-sm'];
+                let html = '';
+                stats.categories.slice(0, 3).forEach((cat, idx) => {
+                    const bClass = bubbleClasses[idx] || 'bubble-sm';
+                    html += `
+                        <div class="bubble ${bClass}">
+                            <div>${cat.percentage}%</div>
+                            <div style="font-size:9px; font-weight:500;">${escapeHtml(cat.name.substring(0, 8))}</div>
+                        </div>
+                    `;
+                });
+                categoriesContainer.innerHTML = html;
+            }
+
+            // 6. Jangkauan Pengunjung per Negara (Pure Real Data)
+            const reachTotalEl = document.getElementById('dashTotalReach');
+            const countryListEl = document.getElementById('dashCountryReachList');
+            if (stats.countryBreakdown) {
+                let totalReach = 0;
+                let html = '';
+                const flags = {
+                    'Indonesia': 'id',
+                    'Malaysia': 'my',
+                    'Singapura': 'sg',
+                    'Jepang': 'jp',
+                    'United States': 'us'
+                };
+
+                Object.keys(stats.countryBreakdown).forEach(country => {
+                    const count = stats.countryBreakdown[country] || 0;
+                    totalReach += count;
+                    const flagCode = flags[country] || 'id';
+
+                    html += `
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: var(--bg-card-sub);">
+                            <div class="d-flex align-items-center">
+                                <img src="https://flagcdn.com/w40/${flagCode}.png" srcset="https://flagcdn.com/w80/${flagCode}.png 2x" width="22" height="16" alt="${country}" class="mr-2" style="border-radius: 2px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                <span class="small font-weight-bold">${escapeHtml(country)}</span>
+                            </div>
+                            <span class="font-weight-bold text-main small">${count.toLocaleString()}</span>
+                        </div>
+                    `;
+                });
+
+                if (reachTotalEl) reachTotalEl.textContent = totalReach.toLocaleString();
+                if (countryListEl) countryListEl.innerHTML = html;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {

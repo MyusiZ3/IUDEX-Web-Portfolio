@@ -17,14 +17,12 @@ Langkah 2: Eksekusi Script SQL dan Pembentukan RLS Rules
 
 1. Pilih menu SQL Editor pada panel navigasi sebelah kiri Supabase Dashboard.
 2. Klik tombol New query.
-3. Salin seluruh kode SQL dari file database/supabase_setup.sql di dalam repositori.
+3. Salin seluruh kode SQL dari file database/supabase_schema.sql di dalam repositori.
 4. Tempelkan kode ke dalam SQL Editor lalu klik tombol RUN.
-5. Script secara otomatis membentuk tabel user, team_members, projects, index performa, serta mengaktifkan Row Level Security (RLS) Rules berikut:
-   * Policy Public Read Users: Membaca data user untuk otentikasi login.
-   * Policy Public Read Projects: Membaca seluruh data proyek portofolio publik.
-   * Policy Public Insert Projects: Menambahkan proyek baru.
-   * Policy Public Update Projects: Memperbarui data proyek.
-   * Policy Public Delete Projects: Menghapus data proyek.
+5. Script secara otomatis membentuk tabel user, projects, site_analytics, menambahkan kolom role, serta mengaktifkan Row Level Security (RLS) Rules berikut:
+   * Policy Public Read/Insert/Update/Delete User: Izinkan web admin membaca, menambah, memperbarui, dan menghapus data pengguna.
+   * Policy Public Read/Insert/Update/Delete Projects: Izinkan web admin membaca, menambah, memperbarui, dan menghapus karya portofolio.
+   * Policy Public Read/Insert Site Analytics: Melacak statistik pengunjung publik.
 
 ====================================================================
 Langkah 3: Pengambilan Kredensial API yang Diperlukan
